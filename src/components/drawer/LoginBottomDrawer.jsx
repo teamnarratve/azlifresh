@@ -164,7 +164,7 @@ const LoginBottomDrawer = ({ open, setOpen }) => {
 
   return (
     <Transition show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[60] lg:hidden" onClose={setOpen}>
+      <Dialog as="div" className="relative z-50 lg:hidden" onClose={setOpen}>
         <TransitionChild
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"
@@ -177,7 +177,7 @@ const LoginBottomDrawer = ({ open, setOpen }) => {
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
         </TransitionChild>
 
-        <div className="fixed inset-x-0 bottom-0 z-[60] flex min-h-full items-end justify-center text-center">
+        <div className="fixed inset-x-0 bottom-0 z-50 flex min-h-full items-end justify-center text-center">
           <TransitionChild
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
@@ -187,33 +187,41 @@ const LoginBottomDrawer = ({ open, setOpen }) => {
             leaveFrom="translate-y-0"
             leaveTo="translate-y-full"
           >
-            <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-t-2xl bg-white shadow-2xl transition-all h-[95vh] flex flex-col">
+            <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-t-3xl bg-white shadow-2xl transition-all h-auto max-h-[60vh] flex flex-col">
               
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
-                <button onClick={handleBack} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
-                   {step === 'otp' ? <ArrowLeft size={24} /> : <span className="w-6 h-6" />} {/* Placeholder for alignment if no back */}
+              <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-gray-50 bg-white shrink-0">
+                <button 
+                    type="button" 
+                    onClick={handleBack} 
+                    className="p-1 text-gray-500 hover:bg-gray-50 rounded-full cursor-pointer relative z-20"
+                >
+                   {step === 'otp' ? <ArrowLeft size={24} /> : <span className="w-6 h-6" />}
                 </button>
                 <h3 className="text-lg font-bold text-gray-900">
-                    {step === 'phone' ? 'Login or Sign Up' : 'Verify OTP'}
+                    {step === 'phone' ? 'Login' : 'Verify OTP'}
                 </h3>
-                <button onClick={handleClose} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+                <button 
+                    type="button" 
+                    onClick={handleClose} 
+                    className="p-1 text-gray-500 hover:bg-gray-50 rounded-full cursor-pointer relative z-20"
+                >
                   <X size={24} />
                 </button>
               </div>
 
               {/* Content */}
-              <div className="p-6 flex-1 flex flex-col items-center justify-center -mt-20">
+              <div className="p-6 overflow-y-auto">
                  
                  {/* Step 1: Phone */}
                  {step === 'phone' && (
-                     <div className="w-full space-y-6">
-                        <div className="text-center mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-                            <p className="text-gray-500">Enter your phone number to continue</p>
+                     <div className="w-full space-y-5">
+                        <div className="text-left">
+                            <h2 className="text-xl font-bold text-gray-900">Welcome</h2>
+                            <p className="text-sm text-gray-500">Enter phone number to continue</p>
                         </div>
 
-                        <form onSubmit={handleSubmit(onSubmitPhone)} className="space-y-6">
+                        <form onSubmit={handleSubmit(onSubmitPhone)} className="space-y-5">
                             <div>
                                 <InputArea
                                     register={register}
@@ -221,7 +229,7 @@ const LoginBottomDrawer = ({ open, setOpen }) => {
                                     type="tel"
                                     placeholder="Mobile Number"
                                     Icon={FiPhone}
-                                    className="h-12 text-lg"
+                                    className="h-14 text-lg"
                                 />
                                 <Error errorMessage={errors.phone?.message} />
                             </div>
@@ -229,7 +237,7 @@ const LoginBottomDrawer = ({ open, setOpen }) => {
                                 disabled={loading}
                                 isLoading={loading}
                                 type="submit"
-                                className="w-full h-12 text-base font-semibold bg-[#124b8a] hover:bg-[#0e3b6e] text-white rounded-xl"
+                                className="w-full h-14 text-base font-bold bg-[#124b8a] hover:bg-[#0e3b6e] text-white rounded-xl shadow-sm"
                             >
                                 Continue
                             </Button>

@@ -11,6 +11,7 @@ const InputArea = ({
   defaultValue,
   autocomplete,
   placeholder,
+  className, 
 }) => {
   return (
     <>
@@ -34,8 +35,8 @@ const InputArea = ({
           autoComplete={autocomplete}
           className={
             Icon
-              ? "py-2 pl-10 w-full placeholder-gray-300"
-              : "py-2 px-4 md:px-5"
+              ? `py-2 pl-10 w-full placeholder-gray-300 ${className || ""}`
+              : `py-2 px-4 md:px-5 ${className || ""}`
           }
         />
       </div>
