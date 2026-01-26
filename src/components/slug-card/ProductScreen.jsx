@@ -34,10 +34,20 @@ import { getStoreCustomizationSetting } from "@services/SettingServices";
 import { useProduct } from "@hooks/azli_hooks/useProduct";
 import CuttingCard from "@components/product/CuttingCard";
 import CheckoutCartScreen from "@components/checkout/CheckoutCartScreen";
+import { useMobileHeader } from "@context/MobileHeaderContext"; // Import
 
 const ProductScreen = ({ product, reviews, relatedProducts }) => {
   const { globalSetting, storeCustomization } = useSetting();
   const { showingTranslateValue } = useUtilsFunction();
+  const { setMobileHeaderTitle } = useMobileHeader(); // Use hook
+
+  // Update Header Title
+  useEffect(() => {
+    if (product?.name) {
+      setMobileHeaderTitle(product.name);
+    }
+    return () => setMobileHeaderTitle(""); // Cleanup
+  }, [product]);
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const currency = globalSetting?.default_currency || "₹";
   const {
@@ -316,7 +326,7 @@ const ProductScreen = ({ product, reviews, relatedProducts }) => {
                     {/* Product Description */}
                     {product?.description && (
                       <div
-                        className="text-sm leading-6 text-gray-600 md:leading-6 mb-6"
+                        className="text-sm leading-6 text-gray-600 md:leading-6 mb-6 rich-text-content"
                         dangerouslySetInnerHTML={{
                           __html: product.description,
                         }}
@@ -327,7 +337,7 @@ const ProductScreen = ({ product, reviews, relatedProducts }) => {
                     {product?.details?.map((detail, index) => (
                       <div key={index} className="mb-6">
                         <div
-                          className="text-sm leading-6 text-gray-600"
+                          className="text-sm leading-6 text-gray-600 rich-text-content"
                           dangerouslySetInnerHTML={{ __html: detail.content }}
                         />
                       </div>

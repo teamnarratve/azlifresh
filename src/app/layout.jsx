@@ -2,7 +2,6 @@
 import React from "react";
 import "@styles/custom.css";
 import Providers from "./provider";
-import Navbar from "@layout/navbar/Navbar";
 import Footer from "@layout/footer/Footer";
 import FooterTop from "@layout/footer/FooterTop";
 import MobileFooter from "@layout/footer/MobileFooter";
@@ -12,6 +11,8 @@ import {
   getGlobalSetting,
   getStoreCustomizationSetting,
 } from "@services/SettingServices";
+
+import HeaderManager from "@components/layout/HeaderManager";
 
 import { SettingProvider } from "@context/SettingContext";
 
@@ -41,13 +42,17 @@ export default async function RootLayout({ children }) {
             initialCustomizationSetting={storeCustomizationSetting}
           >
             <Providers storeSetting={storeSetting}>
-              <Navbar
+              
+              <HeaderManager
                 globalSetting={globalSetting}
                 storeCustomization={storeCustomizationSetting}
               />
-              <main className="bg-gray-50 dark:bg-zinc-900 z-10">
+              
+              {/* pt-14 on mobile to prevent content being hidden behind fixed header */}
+              <main className="bg-gray-50 dark:bg-zinc-900 z-10 pt-14 lg:pt-0">
                 {children}
               </main>
+
               {/* <div className="bg-gray-50 dark:bg-zinc-900 z-10">{children}</div> */}
               {/* <MobileFooter globalSetting={globalSetting} /> */}
 

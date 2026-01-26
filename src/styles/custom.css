@@ -122,9 +122,9 @@
     @apply overflow-x-hidden;
   }
   body {
-    @apply bg-background text-foreground min-h-svh w-full;
-    font-size: 16px; /* Standard professional font size */
-    line-height: 1.6; /* Improved readability */
+    @apply bg-background text-foreground min-h-svh w-full font-sans antialiased;
+    font-size: 16px; /* Global Base Size */
+    line-height: 1.5; /* Standard Line Height */
   }
   /* Lock body scroll when drawer is open */
   body.drawer-open {
@@ -795,8 +795,66 @@ p:not(:last-of-type) {
   background-color: #f2f2f2;
 }
 
-.footer .dropdown:hover .dropdown-content {
-  display: block;
+/* Rich Text Content Standardization */
+.rich-text-content {
+  /* Reset container font */
+  @apply font-sans;
+}
+
+/* Force override all inline styles from CMS */
+.rich-text-content * {
+  font-family: inherit !important;
+  line-height: inherit !important;
+  color: inherit; /* Allow color to be inherited or set by utility, but mostly override bad CMS colors if needed, though usually size is the main culprit */
+}
+
+/* Reset specific elements to platform standards */
+.rich-text-content p, 
+.rich-text-content li,
+.rich-text-content div,
+.rich-text-content span {
+  font-size: 15px !important; /* Mobile Base */
+  line-height: 1.6 !important;
+  margin-bottom: 0.75em;
+}
+
+.rich-text-content h1,
+.rich-text-content h2,
+.rich-text-content h3,
+.rich-text-content h4,
+.rich-text-content h5,
+.rich-text-content h6 {
+  font-weight: 600 !important;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3 !important;
+}
+
+.rich-text-content h1 { font-size: 22px !important; }
+.rich-text-content h2 { font-size: 20px !important; }
+.rich-text-content h3 { font-size: 18px !important; }
+.rich-text-content h4 { font-size: 17px !important; }
+.rich-text-content ul, 
+.rich-text-content ol {
+  padding-left: 1.25em;
+  margin-bottom: 1em;
+  list-style: disc;
+}
+
+/* Desktop Overrides */
+@media (min-width: 768px) {
+  .rich-text-content p, 
+  .rich-text-content li,
+  .rich-text-content div,
+  .rich-text-content span {
+    font-size: 16px !important; /* Desktop Base */
+    line-height: 1.7 !important;
+  }
+  
+  .rich-text-content h1 { font-size: 26px !important; }
+  .rich-text-content h2 { font-size: 24px !important; }
+  .rich-text-content h3 { font-size: 20px !important; }
+  .rich-text-content h4 { font-size: 18px !important; }
 }
 
 .more-link {

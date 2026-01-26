@@ -14,6 +14,7 @@ import { UserProvider } from "@context/UserContext";
 import { SidebarProvider } from "@context/SidebarContext";
 import { LanguageProvider } from "@context/LanguageContext";
 import { store, persistor } from "@redux/store";  // <-- IMPORT persist store
+import { MobileHeaderProvider } from "@context/MobileHeaderContext"; // Import Global Mobile Header Context
 
 let stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
@@ -32,7 +33,11 @@ const Providers = ({ children, storeSetting }) => {
               <SidebarProvider>
                 <UserProvider>
                   <Elements stripe={stripePromise}>
-                    <CartProvider>{children}</CartProvider>
+                    <CartProvider>
+                      <MobileHeaderProvider>
+                        {children}
+                      </MobileHeaderProvider>
+                    </CartProvider>
                   </Elements>
                 </UserProvider>
               </SidebarProvider>
