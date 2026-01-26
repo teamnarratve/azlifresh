@@ -12,6 +12,7 @@ import { IoFishOutline } from "react-icons/io5";
 
 // Internal Components
 import CategoryBottomDrawer from "@components/drawer/CategoryBottomDrawer";
+import LoginBottomDrawer from "@components/drawer/LoginBottomDrawer";
 import CartDrawer from "@components/drawer/CartDrawer";
 import { useAuth } from "@hooks/azli_hooks/useCustomAuth";
 
@@ -22,6 +23,7 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
   const router = useRouter();
   const [openPageDrawer, setOpenPageDrawer] = useState(false);
   const [openCartDrawer, setOpenCartDrawer] = useState(false);
+  const [openLoginDrawer, setOpenLoginDrawer] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { profile, handleFetchProfile } = useAuth();
@@ -38,7 +40,9 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
     if (isLoggedIn) {
       router.push("/user/dashboard");
     } else{
-        router.push("/auth/login");
+        // OPEN MOBILE LOGIN DRAWER INSTEAD OF PAGE REDIRECT
+        setOpenLoginDrawer(true);
+        // router.push("/auth/login"); // Old behavior
     }
   };
 
@@ -58,6 +62,12 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
         setOpen={setOpenPageDrawer}
         categories={categories}
       />
+      
+      {/* 🔐 LOGIN BOTTOM DRAWER */}
+      <LoginBottomDrawer
+        open={openLoginDrawer}
+        setOpen={setOpenLoginDrawer}
+      />
 
       {/* 📌 Bottom Navigation */}
       <footer className="sm:hidden fixed bottom-0 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.06)] z-50">
@@ -70,12 +80,12 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
           >
             <IoFishOutline
               className={`w-6 h-6 ${
-                pathname === "/" ? "text-emerald-600" : "text-gray-500"
+                pathname === "/" ? "text-[#124b8a]" : "text-gray-500"
               }`}
             />
             <span
               className={`text-[11px] font-medium mt-1 ${
-                pathname === "/" ? "text-emerald-600" : "text-gray-500"
+                pathname === "/" ? "text-[#124b8a]" : "text-gray-500"
               }`}
             >
               Home
@@ -89,15 +99,15 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
           >
             <FiGrid
               className={`w-6 h-6 ${
-                pathname.includes("/categories")
-                  ? "text-emerald-600"
+                openPageDrawer || pathname.includes("/search")
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             />
             <span
               className={`text-[11px] font-medium mt-1 ${
-                pathname.includes("/categories")
-                  ? "text-emerald-600"
+                openPageDrawer || pathname.includes("/search")
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             >
@@ -117,15 +127,15 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
             )}
             <FiShoppingCart
               className={`w-6 h-6 ${
-                pathname.includes("/cart")
-                  ? "text-emerald-600"
+                openCartDrawer || pathname.includes("/cart")
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             />
             <span
               className={`text-[11px] font-medium mt-1 ${
-                pathname.includes("/cart")
-                  ? "text-emerald-600"
+                openCartDrawer || pathname.includes("/cart")
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             >
@@ -140,15 +150,15 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
           >
             <FiUser
               className={`w-6 h-6 ${
-                pathname.includes("/user/dashboard")
-                  ? "text-emerald-600"
+                pathname.includes("/user") || pathname.includes("/auth") || openLoginDrawer
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             />
             <span
               className={`text-[11px] font-medium mt-1 ${
-                pathname.includes("/user/dashboard")
-                  ? "text-emerald-600"
+                pathname.includes("/user") || pathname.includes("/auth") || openLoginDrawer
+                  ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             >
