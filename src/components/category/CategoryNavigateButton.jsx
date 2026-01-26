@@ -47,9 +47,9 @@ const CategoryNavigateButton = ({ category }) => {
                     showingTranslateValue(child?.name)
                   )
                 }
-                className="flex hover:translate-x-2 transition-transform duration-300 items-center  text-xs text-gray-400 cursor-pointer"
+                className="flex hover:translate-x-2 transition-transform duration-300 items-center text-[13px] text-gray-500 cursor-pointer pb-1"
               >
-                <span className="text-xs text-gray-400 ">
+                <span className="text-[13px] text-gray-400 mr-1">
                   <IoChevronForwardSharp />
                 </span>
                 {showingTranslateValue(child?.name)}

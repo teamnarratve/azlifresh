@@ -19,7 +19,7 @@ const CategoryCarousel = ({ categories }) => {
 
   return (
     <div className="py-3 px-4">
-      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900">
+      <h2 className="text-[20px] font-bold leading-[1.4] lg:text-[24px] mb-4 text-gray-900">
         Shop by Categories
       </h2>
 
@@ -45,7 +45,7 @@ const CategoryCarousel = ({ categories }) => {
             </div>
 
             {/* Category Name */}
-            <p className="text-[10px] sm:text-base font-medium text-center text-gray-900 group-hover:text-emerald-600 px-1 leading-tight">
+            <p className="text-[14px] sm:text-[15px] font-medium text-center text-gray-900 group-hover:text-emerald-600 px-1 leading-[1.4]">
               {category?.name}
             </p>
           </div>

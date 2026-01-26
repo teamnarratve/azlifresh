@@ -48,8 +48,8 @@ export default async function RootLayout({ children }) {
                 storeCustomization={storeCustomizationSetting}
               />
               
-              {/* pt-14 on mobile to prevent content being hidden behind fixed header */}
-              <main className="bg-gray-50 dark:bg-zinc-900 z-10 pt-14 lg:pt-0">
+              {/* pt-14 removed, handled by HeaderManager spacers */}
+              <main className="bg-gray-50 dark:bg-zinc-900 z-10">
                 {children}
               </main>
 

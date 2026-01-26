@@ -165,9 +165,9 @@ const Home = () => {
 
       {/* Popular Products */}
       <div className="bg-gray-50 dark:bg-zinc-900 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
-        <div className="mb-10 flex justify-center">
-          <div className="text-center w-full lg:w-2/5">
-            <h2 className="text-xl lg:text-2xl mb-2 font-semibold">
+        <div className="mb-4 lg:mb-10 flex justify-start lg:justify-center">
+          <div className="text-left lg:text-center w-full lg:w-2/5">
+            <h2 className="text-[20px] lg:text-2xl mb-2 font-bold text-gray-900">
               <CMSkeletonTwo
                 count={1}
                 height={30}
@@ -176,7 +176,7 @@ const Home = () => {
                 data="Hot Deals You Can’t Miss"
               />
             </h2>
-            <p className="text-base font-sans text-gray-600 dark:text-gray-400 leading-6">
+            <p className="hidden lg:block text-base font-sans text-gray-600 dark:text-gray-400 leading-6">
               <CMSkeletonTwo
                 count={5}
                 height={10}
@@ -240,9 +240,9 @@ const Home = () => {
         id="discount"
         className="bg-gray-50 dark:bg-zinc-800 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
       >
-        <div className="mb-10 flex justify-center">
-          <div className="text-center w-full lg:w-2/5">
-            <h2 className="text-xl lg:text-2xl mb-2 font-semibold">
+        <div className="mb-4 lg:mb-10 flex justify-start lg:justify-center">
+          <div className="text-left lg:text-center w-full lg:w-2/5">
+            <h2 className="text-[20px] lg:text-2xl mb-2 font-bold text-gray-900">
               <CMSkeletonTwo
                 count={1}
                 height={30}
@@ -251,7 +251,7 @@ const Home = () => {
                 data="Ready in Minutes"
               />
             </h2>
-            <p className="text-base font-sans text-gray-600 leading-6">
+            <p className="hidden lg:block text-base font-sans text-gray-600 leading-6">
               <CMSkeletonTwo
                 count={5}
                 height={20}

@@ -31,15 +31,33 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
       {!isRootPage && (
         <div className="lg:hidden">
           <MobileHeader />
+           {/* Spacer for Fixed Header + Extra Gap for Product Page */}
+          <div className="h-14 mb-3" /> 
         </div>
       )}
 
       {/* Default Navbar: Visible on Desktop OR (Mobile AND Root Pages) */}
       <div className={!isRootPage ? "hidden lg:block" : "block"}>
-        <Navbar
-          globalSetting={globalSetting}
-          storeCustomization={storeCustomization}
-        />
+        {/* Force Fixed on Mobile, Sticky/Relative on Desktop as per original behavior ?? 
+            Original Navbar was Sticky. User wants "All top bar should be sticky".
+            We force Fixed on Mobile to ensure it stays top.
+        */}
+        <div className={`
+            ${isRootPage ? 'fixed top-0 left-0 w-full z-30 lg:relative lg:z-auto' : ''}
+        `}>
+             <Navbar
+                globalSetting={globalSetting}
+                storeCustomization={storeCustomization}
+             />
+        </div>
+        
+        {/* Spacer for Mobile Root Page (Navbar Height ~80px/h-20) */}
+        {isRootPage && <div className="h-20 lg:hidden" />} 
+        {/* Note: Navbar includes TopBar + Search Header. Height might be more than 80px. 
+            TopBar (~40px?) + Header (80px) = ~120px? 
+            Let's estimate 120px safe area for now, or check Navbar source.
+            Navbar.jsx: TopNavbar + Header(h-20/80px).
+        */}
       </div>
     </>
   );
