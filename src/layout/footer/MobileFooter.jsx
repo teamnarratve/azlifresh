@@ -11,7 +11,7 @@ import { FiUser, FiShoppingCart, FiGrid } from "react-icons/fi";
 import { IoFishOutline } from "react-icons/io5";
 
 // Internal Components
-import PagesDrawer from "@components/drawer/PagesDrawer";
+import CategoryBottomDrawer from "@components/drawer/CategoryBottomDrawer";
 import CartDrawer from "@components/drawer/CartDrawer";
 import { useAuth } from "@hooks/azli_hooks/useCustomAuth";
 
@@ -52,12 +52,11 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
         setOpen={setOpenCartDrawer}
       />
 
-      {/* 📂 CATEGORY DRAWER */}
-      <PagesDrawer
+      {/* 📂 CATEGORY BOTTOM DRAWER */}
+      <CategoryBottomDrawer
         open={openPageDrawer}
         setOpen={setOpenPageDrawer}
         categories={categories}
-        categoryError={categoryError}
       />
 
       {/* 📌 Bottom Navigation */}
