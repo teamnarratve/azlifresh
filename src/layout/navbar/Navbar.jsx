@@ -34,7 +34,7 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
   // }, [categories]);
 
   return (
-    <div className="sticky z-20 top-0 w-full">
+    <div className="lg:sticky lg:z-20 lg:top-0 w-full">
       {/* navbar top section */}
       <TopNavbar storeCustomization={storeCustomization} />
 

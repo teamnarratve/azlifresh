@@ -8,6 +8,8 @@ import { useCategory } from "@hooks/azli_hooks/usecategory";
 import { useCart } from "@hooks/azli_hooks/useCart";
 import MobileFooter from "@layout/footer/MobileFooter";
 
+import AppDownloadBar from "@components/mobile/AppDownloadBar";
+
 const HeaderManager = ({ globalSetting, storeCustomization }) => {
   const pathname = usePathname();
   const { categories, error: categoryError, handleFetchCategories } = useCategory();
@@ -48,35 +50,34 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
 
       {/* Mobile Back Header: Visible only on Mobile AND Inner Pages */}
       {!isRootPage && (
-        <div className="lg:hidden">
-          <MobileHeader />
-           {/* Spacer for Fixed Header + Extra Gap for Product Page */}
-          <div className="h-14 mb-3" /> 
-        </div>
+        <>
+          <div className="lg:hidden">
+            <AppDownloadBar />
+          </div>
+          <div className="lg:hidden sticky top-0 z-50 bg-white">
+            <MobileHeader />
+          </div>
+        </>
       )}
+      {!isRootPage && <div className="h-14 mb-3 lg:hidden" />} 
 
       {/* Default Navbar: Visible on Desktop OR (Mobile AND Root Pages) */}
-      <div className={!isRootPage ? "hidden lg:block" : "block"}>
-        {/* Force Fixed on Mobile, Sticky/Relative on Desktop as per original behavior ?? 
-            Original Navbar was Sticky. User wants "All top bar should be sticky".
-            We force Fixed on Mobile to ensure it stays top.
-        */}
-        <div className={`
-            ${isRootPage ? 'fixed top-0 left-0 w-full z-30 lg:relative lg:z-auto' : ''}
-        `}>
+      
+      {/* App Bar for Mobile Root Pages - Unfixed, scrolls away */}
+      {isRootPage && (
+          <div className="lg:hidden">
+            <AppDownloadBar />
+          </div>
+      )}
+
+      <div className={`${!isRootPage ? "hidden lg:block" : "block"} sticky top-0 z-30`}>
+        {/* Navbar is internally sticky on Desktop (lg:sticky), but wrapper forces sticky on Mobile too */}
+        <div className="flex flex-col">
              <Navbar
                 globalSetting={globalSetting}
                 storeCustomization={storeCustomization}
              />
         </div>
-        
-        {/* Spacer for Mobile Root Page (Navbar Height ~80px/h-20) */}
-        {isRootPage && <div className="h-20 lg:hidden" />} 
-        {/* Note: Navbar includes TopBar + Search Header. Height might be more than 80px. 
-            TopBar (~40px?) + Header (80px) = ~120px? 
-            Let's estimate 120px safe area for now, or check Navbar source.
-            Navbar.jsx: TopNavbar + Header(h-20/80px).
-        */}
       </div>
     </>
   );

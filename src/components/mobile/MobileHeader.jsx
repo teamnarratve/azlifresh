@@ -39,7 +39,7 @@ const MobileHeader = () => {
   };
 
   return (
-    <div className="lg:hidden fixed top-0 w-full z-50 bg-white border-b border-gray-100 shadow-sm h-14 flex items-center px-4 transition-all duration-300">
+    <div className="bg-white border-b border-gray-100 shadow-sm h-14 flex items-center px-4 transition-all duration-300 w-full">
       
       {showSearch ? (
         /* Search Mode */
