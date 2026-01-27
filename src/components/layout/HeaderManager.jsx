@@ -7,6 +7,7 @@ import MobileHeader from "@components/mobile/MobileHeader";
 import { useCategory } from "@hooks/azli_hooks/usecategory";
 import { useCart } from "@hooks/azli_hooks/useCart";
 import MobileFooter from "@layout/footer/MobileFooter";
+import StickyCart from "@components/cart/StickyCart";
 
 import AppDownloadBar from "@components/mobile/AppDownloadBar";
 
@@ -46,6 +47,13 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
         categories={categories}
         categoryError={categoryError}
         globalSetting={globalSetting}
+      />
+      
+      {/* Sticky Cart Banner (Mobile Only) */}
+      <StickyCart 
+        currency={globalSetting?.default_currency || "₹"}
+        count={count}
+        totalAmount={useCart().totalAmount || 0}
       />
 
       {/* Mobile Back Header: Visible only on Mobile AND Inner Pages AND NOT Cart */}
