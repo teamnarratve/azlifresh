@@ -57,17 +57,7 @@ const CartPage = () => {
         </button>
         <h1 className="text-lg font-bold text-gray-900">My Cart</h1>
         
-        {!isEmpty ? (
-            <button 
-                onClick={handleClearCart}
-                className="p-2 -mr-2 text-gray-500 hover:text-red-500 rounded-full transition-colors"
-                title="Clear Cart"
-            >
-                <FiTrash2 className="w-5 h-5" />
-            </button>
-        ) : (
-            <div className="w-9" /> /* Spacer */
-        )}
+        <div className="w-9" />
       </div>
 
       {/* 2. CART CONTENT */}

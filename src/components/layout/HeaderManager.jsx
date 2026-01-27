@@ -42,12 +42,14 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
 
   return (
     <>
-      <MobileFooter
-        count={count}
-        categories={categories}
-        categoryError={categoryError}
-        globalSetting={globalSetting}
-      />
+      {!pathname.includes("/checkout") && (
+        <MobileFooter
+            count={count}
+            categories={categories}
+            categoryError={categoryError}
+            globalSetting={globalSetting}
+        />
+      )}
       
       {/* Sticky Cart Banner (Mobile Only) */}
       <StickyCart 
@@ -56,8 +58,8 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
         totalAmount={useCart().totalAmount || 0}
       />
 
-      {/* Mobile Back Header: Visible only on Mobile AND Inner Pages AND NOT Cart */}
-      {!isRootPage && pathname !== "/cart" && (
+      {/* Mobile Back Header: Visible only on Mobile AND Inner Pages AND NOT Cart OR Checkout (Checkout has custom header) */}
+      {!isRootPage && pathname !== "/cart" && pathname !== "/checkout" && (
         <>
           <div className="lg:hidden">
             <AppDownloadBar />

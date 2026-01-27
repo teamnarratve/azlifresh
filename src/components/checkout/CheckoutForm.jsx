@@ -335,331 +335,230 @@ const CheckoutForm = () => {
     }
   };
 
+  // 4. Custom Sticky Header (replaces global header)
+  const CheckoutHeader = () => (
+    <div className="sticky top-0 z-30 bg-white border-b border-gray-100 px-4 h-14 flex items-center gap-3 shadow-sm">
+      <button 
+        onClick={() => router.back()}
+        className="p-1 -ml-1 text-gray-700 hover:bg-gray-50 rounded-full"
+      >
+        <IoChevronBack className="w-6 h-6" />
+      </button>
+      <h1 className="text-lg font-bold text-gray-900">Checkout</h1>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-[#F6F7FB] w-full">
-      {/* MAIN WRAPPER (Desktop Full Width) */}
-      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-28">
-        {/* HEADER */}
-        <header className="flex items-center justify-between pt-6 pb-4">
-          <div className="flex items-center gap-2">
-            {/* <button className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm">
-              <IoChevronBack className="text-lg text-gray-700" />
-            </button> */}
-            <h1 className="text-xl font-semibold text-gray-900">Checkout</h1>
-          </div>
+    <div className="min-h-screen bg-[#F6F7FB] w-full pb-32">
+        <CheckoutHeader />
 
-          {/* Express Delivery badge */}
-          <div className="rounded-full bg-gradient-to-r from-[#0077FF] via-[#00B54A] to-[#FFD600] px-4 py-1 text-xs font-semibold text-white shadow">
-            Express Delivery ⚡
-          </div>
-        </header>
-
-        {/* ESTIMATED DELIVERY */}
-        <div className="mb-4 rounded-xl bg-[#E4F7EA] px-4 py-2 text-center text-[14px] font-semibold text-[#118A3D]">
-          Estimated Delivery Time:
-        </div>
-
-        {/* ===================== CONTENT ========================== */}
-        <div className="space-y-5">
-          {/* ADDRESS CARD */}
-          <div
-            className="rounded-2xl bg-white p-4 shadow-sm cursor-pointer"
-            onClick={() => setAddressModalOpen(true)}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EAF7EB]">
-                <FiMapPin className="text-xl text-[#26A541]" />
-              </div>
-
-              <div className="flex-1">
-                <div className="mb-1 flex items-center gap-2">
-                  <p className="text-[14px] font-medium text-gray-500">
-                    Deliver to
-                  </p>
-
-                  <span className="rounded-full bg-[#FFF4E0] px-2 py-[2px] text-[11px] font-medium text-[#C48321]">
-                    {selectedAddress?.address_type}
-                  </span>
+        <div className="max-w-screen-xl mx-auto px-4 pt-4 space-y-4">
+            
+            {/* 1. DELIVERY ADDRESS */}
+            <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-100" onClick={() => setAddressModalOpen(true)}>
+                <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Delivery Address</h2>
+                    <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                        {selectedAddress?.address_type || 'Select'}
+                    </span>
                 </div>
-
-                {/* 🔥 UPDATED ADDRESS TEXT (NO DESIGN CHANGE) */}
-                {selectedAddress && (
-                  <p className="text-[14px] font-medium text-gray-800 leading-5 line-clamp-2">
-                    {`${selectedAddress?.street_location || ""}, ${
-                      selectedAddress?.street || ""
-                    }, ${selectedAddress?.district || ""}, ${
-                      selectedAddress?.state || ""
-                    } - ${selectedAddress?.pin_code || ""}`}
-                  </p>
-                )}
-              </div>
-
-              <FiChevronRight className="text-gray-400 text-xl" />
-            </div>
-          </div>
-
-          {/* DELIVERY METHOD */}
-          <div
-            className="rounded-2xl bg-white p-4 shadow-sm cursor-pointer"
-            onClick={() => setDeliveryModalOpen(true)}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EAF7EB]">
-                <FiTruck className="text-xl text-[#26A541]" />
-              </div>
-
-              <div className="flex-1">
-                <p className="text-[14px] font-medium text-gray-500">
-                  Delivery Method
-                </p>
-                <p className="text-[14px] font-semibold text-gray-800">
-                  {selectedDeliveryMethod
-                    ? selectedDeliveryMethod.name +
-                      (selectedDeliveryMethod.disable_time_slot
-                        ? ""
-                        : selectedTimeSlot
-                        ? ` (${selectedTimeSlot.timing})`
-                        : "")
-                    : "Select Delivery Method"}
-                </p>
-              </div>
-
-              <FiChevronRight className="text-gray-400 text-xl" />
-            </div>
-          </div>
-
-          {/* SKIP BAG */}
-          <div className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
-            <button
-              className={`mt-[3px] flex h-5 w-5 items-center justify-center rounded border 
-      ${skipBag ? "border-green-600 bg-green-600" : "border-gray-400 bg-white"}
-    `}
-              onClick={() => setSkipBag(!skipBag)}
-            >
-              {skipBag && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              )}
-            </button>
-
-            <div className="flex-1">
-              <p className="text-[12px] text-gray-400">
-                Every small choice helps the planet.
-              </p>
-              <p className="text-[14px] font-semibold text-gray-800">
-                Skip the paper bag 🌱
-              </p>
-            </div>
-          </div>
-
-          {/* CART ITEM */}
-          {cartItems.map((item) => (
-            <CartItemCard
-              key={item.id}
-              item={item}
-              onIncrease={() => handleUpdateQuantity(item.id, item.qty + 1)}
-              onDecrease={() => {
-                // If quantity is 1, decreasing will remove the item (qty 0)
-                if (item.qty > 0) {
-                  handleUpdateQuantity(item.id, item.qty - 1);
-                }
-              }}
-              onRemove={() => handleUpdateQuantity(item.id, 0)}
-            />
-          ))}
-
-          {/* FORGOT SOMETHING */}
-          <div className="flex items-center justify-between rounded-2xl bg-[#FFA726] px-4 py-3 text-white shadow">
-            <p className="text-[15px] font-semibold">Forgot Something?</p>
-            <Link href="/">
-              {" "}
-              <button className="rounded-xl bg-white px-4 py-2 text-[13px] font-semibold text-[#FFA726]">
-                + Add more Items
-              </button>
-            </Link>
-          </div>
-
-          {showAddonSlider && (
-            <div className="rounded-2xl bg-white p-4 shadow-sm">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-[14px] font-semibold text-gray-900">
-                  You've Earned a Free Item!
-                </p>
-                <span className="rounded-full bg-[#E8F5E9] px-2 py-[2px] text-[11px] font-semibold text-[#2A8B45]">
-                  Free Addon
-                </span>
-              </div>
-
-              <Swiper
-                spaceBetween={14}
-                slidesPerView={1.15}
-                breakpoints={{
-                  640: { slidesPerView: 2.1 },
-                  768: { slidesPerView: 2.4 },
-                  1024: { slidesPerView: 3.2 },
-                }}
-                className="pb-8"
-              >
-                {addonProducts.map((product) => {
-                  const isClaimed =
-                    Boolean(product?.cartDetails?.id) ||
-                    cartList?.some(
-                      (item) => item.cart_product_data?.id === product?.id
-                    );
-
-                  return (
-                  <SwiperSlide key={product.id}>
-                    <div className="relative h-full rounded-2xl border border-gray-100 bg-white p-3 shadow-sm">
-                      <span className="absolute left-2 top-2 rounded bg-[#FF2E63] px-2 py-[2px] text-[10px] font-semibold text-white">
-                        FREE
-                      </span>
-                      <div className="flex items-center justify-center rounded-xl bg-[#F6F7FB] p-3">
-                        <Image
-                          src={product?.imgs?.[0]?.img || "/placeholder.png"}
-                          alt={product?.name || "Addon product"}
-                          width={160}
-                          height={120}
-                          className="h-24 w-auto object-contain"
-                        />
-                      </div>
-                      <div className="mt-3">
-                        <p className="text-[13px] font-semibold text-gray-900">
-                          {product?.name}
-                        </p>
-                        <p className="text-[12px] text-gray-500">
-                          {product?.weight}
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => handleClaimAddon(product)}
-                        disabled={isClaimed}
-                        className={`mt-3 w-full rounded-xl border px-3 py-2 text-[12px] font-semibold ${
-                          isClaimed
-                            ? "border-gray-200 bg-gray-100 text-gray-500"
-                            : "border-[#2A8B45] text-[#2A8B45]"
-                        }`}
-                      >
-                        {isClaimed ? "Claimed" : "Claim"}
-                      </button>
+                <div className="flex items-center gap-3">
+                    <div className="bg-orange-50 p-2 rounded-full shrink-0">
+                        <FiMapPin className="text-orange-600 w-5 h-5" />
                     </div>
-                  </SwiperSlide>
-                  );
-                })}
-              </Swiper>
+                    <div className="flex-1 min-w-0">
+                         {selectedAddress ? (
+                            <p className="text-sm font-medium text-gray-800 leading-tight line-clamp-2">
+                                {`${selectedAddress?.street_location || ""}, ${selectedAddress?.street || ""}, ${selectedAddress?.district || ""}`}
+                            </p>
+                         ) : (
+                             <p className="text-sm text-gray-400">Select a delivery address</p>
+                         )}
+                    </div>
+                    <FiChevronRight className="text-gray-400" />
+                </div>
+            </section>
 
-              <div className="mt-3 flex items-start gap-3 rounded-xl border border-gray-100 bg-[#FAFAFA] px-3 py-3 text-[12px] text-gray-600">
-                <span className="mt-[2px] flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-[11px] font-semibold text-gray-500">
-                  i
-                </span>
-                <p>
-                  Add this free item to your order before placing it. If not
-                  claimed, it will be canceled.
-                </p>
-              </div>
-            </div>
-          )}
+            {/* 2. DELIVERY METHOD */}
+            <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-100" onClick={() => setDeliveryModalOpen(true)}>
+                 <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Delivery Method</h2>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="bg-blue-50 p-2 rounded-full shrink-0">
+                        <FiTruck className="text-blue-600 w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm font-semibold text-gray-900">
+                             {selectedDeliveryMethod ? selectedDeliveryMethod.name : "Select Method"}
+                        </p>
+                        {selectedTimeSlot && (
+                            <p className="text-xs text-gray-500 mt-0.5">
+                                {selectedTimeSlot.timing}
+                            </p>
+                        )}
+                         {!selectedDeliveryMethod && <p className="text-xs text-gray-400">Choose delivery type</p>}
+                    </div>
+                    <FiChevronRight className="text-gray-400" />
+                </div>
+            </section>
 
-          {/* COUPON */}
-          <div className="flex items-center justify-between rounded-2xl bg-white p-4 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF7E6]">
-                <span className="text-xl">🎟️</span>
-              </div>
-              <div>
-                <p className="text-[12px] text-gray-500">Got a Promo Code?</p>
-                <p className="text-[14px] font-semibold text-[#26A541]">
-                  Apply Coupon
-                </p>
-              </div>
-            </div>
-            <FiChevronRight className="text-gray-400 text-xl" />
-          </div>
+            {/* 3. SUSTAINABILITY (SKIP BAG) */}
+            <section className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex items-center gap-3" onClick={() => setSkipBag(!skipBag)}>
+                 <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${skipBag ? "bg-green-600 border-green-600" : "border-gray-300 bg-white"}`}>
+                    {skipBag && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
+                 </div>
+                 <div className="flex-1">
+                     <p className="text-sm font-semibold text-gray-800">Skip paper bag 🌱</p>
+                     <p className="text-xs text-gray-500">Every small choice helps the planet.</p>
+                 </div>
+            </section>
 
-          {/* ORDER SUMMARY */}
-          <OrderSummary
-            subtotal={totalAmount}
-            discount={discount}
-            deliveryFee={0} // or dynamic delivery fee
-            tax={0} // or dynamic tax if needed
-            total={totalAmount} // or final amount after everything
-          />
+            {/* 4. ORDER ITEMS */}
+            <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">Items ({count})</h2>
+                <div className="space-y-4">
+                    {cartItems.map((item) => (
+                        <CartItemCard
+                            key={item.id}
+                            item={item}
+                            onIncrease={() => handleUpdateQuantity(item.id, item.qty + 1)}
+                            onDecrease={() => {
+                                if (item.qty > 0) handleUpdateQuantity(item.id, item.qty - 1);
+                            }}
+                            onRemove={() => handleUpdateQuantity(item.id, 0)}
+                        />
+                    ))}
+                </div>
+                
+                 {/* Forgot Something */}
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                    <Link href="/" className="flex items-center justify-between group">
+                        <span className="text-sm font-medium text-gray-600 group-hover:text-green-600 transition">Forgot something?</span>
+                        <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg group-hover:bg-green-100 transition">
+                            + Add Items
+                        </span>
+                    </Link>
+                </div>
+            </section>
+
+            {/* 5. FREE ADDONS */}
+            {showAddonSlider && (
+                <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 overflow-hidden">
+                     <div className="flex items-center gap-2 mb-3">
+                        <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">FREE</span>
+                        <h2 className="text-sm font-bold text-gray-900">Claim Free Gift</h2>
+                     </div>
+                     <Swiper
+                        spaceBetween={12}
+                        slidesPerView={1.2}
+                        className="w-full"
+                      >
+                        {addonProducts.map((product) => {
+                             const isClaimed = Boolean(product?.cartDetails?.id) || cartList?.some((item) => item.cart_product_data?.id === product?.id);
+                             return (
+                                <SwiperSlide key={product.id}>
+                                    <div className="border border-gray-100 rounded-lg p-2 flex gap-3 items-center bg-gray-50">
+                                         <div className="bg-white p-1 rounded-md border border-gray-100 shrink-0">
+                                             <Image src={product?.imgs?.[0]?.img || "/placeholder.png"} alt={product.name} width={40} height={40} className="w-10 h-10 object-contain" />
+                                         </div>
+                                         <div className="flex-1 min-w-0">
+                                             <p className="text-xs font-semibold text-gray-900 truncate">{product.name}</p>
+                                             <p className="text-[10px] text-gray-500">{product.weight}</p>
+                                         </div>
+                                         <button 
+                                            onClick={() => handleClaimAddon(product)}
+                                            disabled={isClaimed}
+                                            className={`text-xs font-bold px-2 py-1 rounded-md ${isClaimed ? 'text-gray-400 bg-gray-200' : 'text-white bg-red-500'}`}
+                                         >
+                                             {isClaimed ? '✓' : 'ADD'}
+                                         </button>
+                                    </div>
+                                </SwiperSlide>
+                             )
+                        })}
+                      </Swiper>
+                </section>
+            )}
+
+            {/* 6. COUPON */}
+            <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center justify-between" onClick={() => {/* Coupon expansion logic */}}>
+                 <div className="flex items-center gap-3">
+                     <div className="bg-purple-50 p-2 rounded-full text-purple-600">
+                         <span className="text-lg">🎟️</span>
+                     </div>
+                     <div>
+                         <p className="text-sm font-semibold text-gray-900">Apply Coupon</p>
+                     </div>
+                 </div>
+                 <span className="text-xs font-bold text-green-600">Select</span>
+            </section>
+
+             {/* 7. ORDER SUMMARY */}
+             <div className="pb-4">
+                <OrderSummary
+                    subtotal={totalAmount}
+                    discount={discount}
+                    deliveryFee={0}
+                    tax={0}
+                    total={totalAmount}
+                />
+             </div>
         </div>
 
-        {/* ====================== ADDRESS MODAL ====================== */}
+        {/* MODALS */}
         <AddressSelectorModal
           open={isAddressModalOpen}
           onClose={() => setAddressModalOpen(false)}
           addresses={addressList}
           selectedId={selectedAddressId}
           onSelect={async (id) => {
-            console.log("🟩 Address selected:", id);
-
-            const ok = await handleSelectAddress(id); // 🔥 API CALL
-
+            const ok = await handleSelectAddress(id);
             if (ok) {
-              setSelectedAddressId(id); // update UI
+              setSelectedAddressId(id);
               setAddressModalOpen(false);
             }
           }}
           onAddNew={() => {
             setAddressModalOpen(false);
             router.push("/address");
-            console.log("Redirect to add address page");
           }}
         />
-
-        {/* ====================== DELIVERY MODAL ====================== */}
 
         <DeliveryMethodModal
           open={isDeliveryModalOpen}
           onClose={() => setDeliveryModalOpen(false)}
-          deliveryTypes={deliveryTypes} // <-- FEED API ARRAY
+          deliveryTypes={deliveryTypes}
           selectedMethod={selectedDeliveryMethod}
-          onSelectMethod={(method) => {
-            console.log("Selected Method:", method);
-            setSelectedDeliveryMethod(method);
-          }}
+          onSelectMethod={(method) => setSelectedDeliveryMethod(method)}
           onSelectTimeSlot={(method) => {
-            console.log("Selected Time Slot Method:", method);
             setSelectedDeliveryMethod(method);
             setDeliveryModalOpen(false);
-            setTimeSlotModalOpen(true); // open slot picker
+            setTimeSlotModalOpen(true);
           }}
         />
 
-        {/* ====================== TIME SLOT MODAL ====================== */}
+        <TimeSlotModal
+          open={isTimeSlotModalOpen}
+          onClose={() => setTimeSlotModalOpen(false)}
+          selectedSlot={selectedTimeSlot}
+          todaySlots={timeSlots.today_data}
+          tomorrowSlots={timeSlots.next_day_data}
+          onSelectSlot={(slot) => setSelectedTimeSlot(slot)}
+          onConfirm={(slot) => {
+            setSelectedTimeSlot(slot);
+            setTimeSlotModalOpen(false);
+          }}
+        />
 
         <PaymentModal
           open={isPaymentModalOpen}
           onClose={() => setPaymentModalOpen(false)}
           totalAmount={totalAmount}
           walletBalance={profile?.user_wallet_data?.amount}
-          onConfirmPayment={async (
-            finalAmount,
-            paymentMethod,
-            walletDiscount
-          ) => {
-            const ok = await handleCheckout(
-              paymentMethod,
-              finalAmount,
-              walletDiscount
-            );
-            if (ok) {
-              setPaymentModalOpen(false);
-            }
+          onConfirmPayment={async (amount, method, wallet) => {
+            const ok = await handleCheckout(method, amount, wallet);
+            if (ok) setPaymentModalOpen(false);
           }}
         />
 
@@ -671,35 +570,16 @@ const CheckoutForm = () => {
             router.push("/my-orders");
           }}
         />
-
-        <TimeSlotModal
-          open={isTimeSlotModalOpen}
-          onClose={() => setTimeSlotModalOpen(false)}
-          selectedSlot={selectedTimeSlot}
-          todaySlots={timeSlots.today_data}
-          tomorrowSlots={timeSlots.next_day_data}
-          onSelectSlot={(slot) => {
-            // dispatch(handleSelectTimeSlot(slot));
-            setSelectedTimeSlot(slot); // LOCAL STORE
-          }}
-          onConfirm={(slot) => {
-            console.log("Selected Slot:", slot);
-            setSelectedTimeSlot(slot);
-            setTimeSlotModalOpen(false);
-          }}
-        />
-
-        {/* ERROR MODAL */}
+        
+        {/* Error Modal */}
         {isErrorModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg relative">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Order Not Placed
-              </h3>
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Notice</h3>
               <p className="text-sm text-gray-700">{errorMessage}</p>
               <div className="mt-4 flex justify-end">
                 <button
-                  className="rounded-lg bg-[#2A8B45] px-4 py-2 text-sm font-semibold text-white"
+                  className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white"
                   onClick={() => setErrorModalOpen(false)}
                 >
                   Close
@@ -708,39 +588,31 @@ const CheckoutForm = () => {
             </div>
           </div>
         )}
+
+      {/* 8. STICKY BOTTOM ACTION BAR */}
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] z-40">
+           <div className="max-w-screen-xl mx-auto flex items-center gap-4">
+                <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">To Pay</span>
+                    <span className="text-xl font-bold text-gray-900">₹{totalAmount}</span>
+                </div>
+                <button
+                    onClick={() => {
+                         if (!selectedAddress) {
+                            setAddressModalOpen(true);
+                        } else if (!selectedDeliveryMethod) {
+                            setDeliveryModalOpen(true);
+                        } else {
+                            setPaymentModalOpen(true);
+                        }
+                    }}
+                    className="flex-1 bg-green-600 text-white h-12 rounded-xl font-bold shadow-lg shadow-green-100 hover:bg-green-700 active:scale-[0.98] transition-transform"
+                >
+                    Place Order
+                </button>
+           </div>
       </div>
 
-      {/* STICKY BOTTOM BAR */}
-      {count > 0 && (
-        <div className=" inset-x-0 bottom-0 z-20 flex justify-center bg-transparent pb-3">
-          <div className="w-full max-w-screen-xl mx-auto px-4 md:px-10 lg:px-16 xl:px-20">
-            <div className="rounded-2xl bg-white p-3 shadow-lg">
-              <div className="flex items-center justify-between px-3 text-[13px] text-gray-600">
-                <span>{count} item</span>
-                <span className="font-semibold text-gray-800">
-                  ₹ {totalAmount}
-                </span>
-              </div>
-              <button
-                className="mt-2 w-full rounded-2xl bg-[#2A8B45] py-3 text-[15px] font-semibold text-white"
-                onClick={() => {
-                  if (!selectedAddress) {
-                    setAddressModalOpen(true);
-                  } else if (!selectedDeliveryMethod) {
-                    setDeliveryModalOpen(true);
-                    console.log("delivery method not selected"); // You can add payment logic later
-                  } else {
-                    setPaymentModalOpen(true);
-                    console.log("Proceed to checkout"); // You can add payment logic later
-                  }
-                }}
-              >
-                {buttonLabel}{" "}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
