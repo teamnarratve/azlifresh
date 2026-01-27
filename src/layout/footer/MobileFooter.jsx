@@ -28,22 +28,15 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { profile, handleFetchProfile } = useAuth();
 
+  // Listen for custom event to open login drawer logic
   useEffect(() => {
-    if (isLoggedIn && (!profile || Object.keys(profile).length === 0)) {
-      handleFetchProfile();
-    }
-  }, [isLoggedIn, profile]);
-
+    const handleOpenAuth = () => setOpenLoginDrawer(true);
+    window.addEventListener("openAuthModal", handleOpenAuth);
+    return () => window.removeEventListener("openAuthModal", handleOpenAuth);
+  }, []);
 
   const handleAccountClick = () => {
-    console.log("Account icon clicked and isLoggedIn :",isLoggedIn);
-    if (isLoggedIn) {
-      router.push("/user/dashboard");
-    } else{
-        // OPEN MOBILE LOGIN DRAWER INSTEAD OF PAGE REDIRECT
-        setOpenLoginDrawer(true);
-        // router.push("/auth/login"); // Old behavior
-    }
+     router.push("/user/dashboard");
   };
 
   return (

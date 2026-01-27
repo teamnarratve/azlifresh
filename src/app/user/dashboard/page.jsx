@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FiUser, FiShoppingBag, FiBell, FiCreditCard, FiRefreshCcw, FiMapPin, FiShare2, FiStar, FiHelpCircle, FiLogOut } from "react-icons/fi";
+import { FiUser, FiShoppingBag, FiBell, FiCreditCard, FiRefreshCcw, FiMapPin, FiShare2, FiStar, FiHelpCircle, FiLogOut, FiShield, FiLock } from "react-icons/fi";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@redux/slices/authSlice";
@@ -42,6 +42,66 @@ useEffect(() => {
     { title: "Refer & Earn", icon: <FiShare2 />, gradient: "from-cyan-200 to-sky-200", link: "#" },
   ];
 
+
+  const handleOpenLogin = () => {
+    // Dispatch event for MobileFooter to open drawer
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("openAuthModal"));
+    }
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="bg-white min-h-screen pb-20 pt-4 lg:pt-10">
+        <div className="container mx-auto px-4 max-w-screen-md">
+          {/* Guest Greeting */}
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                <FiUser className="w-10 h-10 text-gray-400" />
+             </div>
+             <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Azli Fresh</h2>
+             <p className="text-gray-500 mb-8 max-w-xs mx-auto">
+               Login to view your orders, access your wallet, and manage your addresses.
+             </p>
+             
+             <button
+               onClick={handleOpenLogin}
+               className="w-full max-w-sm bg-[#124b8a] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-[#0e3b6e] transition-all transform active:scale-95 text-lg"
+             >
+               Login or Sign Up
+             </button>
+          </div>
+
+          {/* Info Links */}
+          <div className="mt-6 border-t border-gray-100 pt-6">
+             <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+               Information
+             </h3>
+             <div className="space-y-1">
+                {[
+                  { title: "About Us", icon: FiHelpCircle, link: "#" },
+                  { title: "Help & Support", icon: FiHelpCircle, link: "#" },
+                  { title: "Terms & Conditions", icon: FiShield, link: "#" }, // Typo in icon imports? Check imports
+                  { title: "Privacy Policy", icon: FiLock, link: "#" },
+                ].map((item, i) => (
+                   <Link 
+                     key={i} 
+                     href={item.link}
+                     className="flex items-center justify-between px-4 py-4 hover:bg-gray-50 rounded-lg transition-colors group"
+                   >
+                     <div className="flex items-center gap-4">
+                        <item.icon className="w-5 h-5 text-gray-400 group-hover:text-[#124b8a] transition-colors" />
+                        <span className="text-gray-700 font-medium group-hover:text-gray-900">{item.title}</span>
+                     </div>
+                     <IoChevronForward className="w-5 h-5 text-gray-300" />
+                   </Link>
+                ))}
+             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen pb-20 lg:pt-10">
@@ -114,48 +174,21 @@ useEffect(() => {
         </div>
 
         {/* LOGOUT SECTION */}
-    {/* LOGOUT SECTION */}
-<div className="flex justify-center mt-10 mb-6">
-  {isLoggedIn ? (
-    <button
-      onClick={handleLogout}
-      type="button"
-      className="flex items-center gap-2 px-6 py-2 bg-red-500 text-white 
-                 font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
-    >
-      <FiLogOut className="w-5 h-5" />
-      Logout
-    </button>
-  ) : (
-    <Link
-      href="/auth/login"
-      className="flex items-center gap-2 px-6 py-2 bg-emerald-600 text-white 
-                 font-semibold rounded-lg shadow-md hover:bg-emerald-700 transition"
-    >
-      <FiUser className="w-5 h-5" />
-      Login
-    </Link>
-  )}
-</div>
-
+        <div className="flex justify-center mt-10 mb-6">
+            <button
+              onClick={handleLogout}
+              type="button"
+              className="flex items-center gap-2 px-6 py-2 bg-red-500 text-white 
+                         font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
+            >
+              <FiLogOut className="w-5 h-5" />
+              Logout
+            </button>
+        </div>
 
         <p className="text-center text-sm text-red-600 cursor-pointer mb-10">
           Delete My Account
         </p>
-
-      
-        {/* <div className="flex justify-center my-6">
-          <Image  src="/logo/azli_logo.png" width={140} height={80} alt="My Azli Fresh" />
-        </div>
-         <div className="relative w-44 h-16 mx-auto">
-            <Image
-              width={200}
-              height={100}
-              src="/logo/azli_logo.png"
-              alt="logo"
-              className="w-full h-auto object-contain"
-            />
-          </div> */}
       </div>
     </div>
   );

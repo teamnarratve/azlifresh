@@ -57,7 +57,7 @@ export default async function RootLayout({ children }) {
               {/* <MobileFooter globalSetting={globalSetting} /> */}
 
               {/* app download componet */}
-              <div className="w-full site-footer">
+              <div className="hidden lg:block w-full site-footer">
                 <FooterTop error={error} />
 
                 {/* icons and 4 sentences component */}

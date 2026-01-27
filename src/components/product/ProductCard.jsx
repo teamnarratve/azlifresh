@@ -20,8 +20,9 @@ const ProductCard = ({ product }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { globalSetting } = useSetting();
 
-  const { cartList, handleAddItem, handleUpdateQuantity } = useCart();
+  const { cartList, handleAddItem, handleUpdateQuantity, isLoggedIn } = useCart();
   const currency = globalSetting?.default_currency || "₹";
+  const [pendingAddToCart, setPendingAddToCart] = useState(false);
 
   // 🧠 Debug
   // useEffect(() => {
@@ -76,6 +77,13 @@ const ProductCard = ({ product }) => {
       return;
     }
 
+    // Mobile Inline Login Logic
+    if (!isLoggedIn && typeof window !== "undefined" && window.innerWidth < 1024) {
+      setPendingAddToCart(true);
+      window.dispatchEvent(new Event("openAuthModal"));
+      return;
+    }
+
     await handleAddItem({
       product_id: productId,
       product_option_id: singleCuttingOption.id,
@@ -83,6 +91,14 @@ const ProductCard = ({ product }) => {
       redirect: currentPath,
     });
   };
+
+  // Effect to retry add to cart after login
+  useEffect(() => {
+    if (isLoggedIn && pendingAddToCart) {
+       handleAddToCartWithRedirect();
+       setPendingAddToCart(false);
+    }
+  }, [isLoggedIn]);
 
   const handleIncrease = () => {
     if (!cartItem) return;

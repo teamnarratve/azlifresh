@@ -20,7 +20,8 @@ const CuttingCard = ({ product, ProductId,stock,stockStatus }) => {
   const { globalSetting } = useSetting();
   const currency = globalSetting?.default_currency || "₹";
 
-  const { cartList, handleAddItem, handleUpdateQuantity } = useCart();
+  const { cartList, handleAddItem, handleUpdateQuantity, isLoggedIn } = useCart();
+  const [pendingAddToCart, setPendingAddToCart] = useState(false);
 
   const productOptionId = product?.id;
   const productName = product?.name;
@@ -52,6 +53,13 @@ const currentPath = searchParams?.toString()
   : pathname;
 
 const handleAddToCartWithRedirect = async () => {
+    // Mobile Inline Login Logic
+    if (!isLoggedIn && typeof window !== "undefined" && window.innerWidth < 1024) {
+      setPendingAddToCart(true);
+      window.dispatchEvent(new Event("openAuthModal"));
+      return;
+    }
+
   const redirectPath = searchParams?.toString()
     ? `${pathname}?${searchParams.toString()}`
     : pathname;
@@ -65,6 +73,14 @@ const handleAddToCartWithRedirect = async () => {
     redirect: redirectPath,
   });
 };
+
+  // Effect to retry add to cart after login
+  useEffect(() => {
+    if (isLoggedIn && pendingAddToCart) {
+       handleAddToCartWithRedirect();
+       setPendingAddToCart(false);
+    }
+  }, [isLoggedIn]);
 
 
   const handleIncrease = () => {
