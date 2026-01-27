@@ -14,10 +14,12 @@ import Price from "@components/common/Price";
 import Stock from "@components/common/Stock";
 import Rating from "@components/common/Rating";
 import { useCart } from "@hooks/azli_hooks/useCart";
+import VariantSelectionDrawer from "@components/drawer/VariantSelectionDrawer"; // Import Drawer
 
 const ProductCard = ({ product }) => {
   const modalRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [variantDrawerOpen, setVariantDrawerOpen] = useState(false); // New State
   const { globalSetting } = useSetting();
 
   const { cartList, handleAddItem, handleUpdateQuantity, isLoggedIn } = useCart();
@@ -178,7 +180,7 @@ const ProductCard = ({ product }) => {
               originalPrice={originalPrice}
             />
           )}
-          {!showNotify && hasSingleCuttingOption && (
+            {!showNotify && hasSingleCuttingOption && (
             <div className="flex justify-center">
               {cartItem ? (
                 <div className="flex items-center gap-2 bg-emerald-600 text-white px-2 py-[2px] rounded-full text-sm w-fit">
@@ -200,6 +202,22 @@ const ProductCard = ({ product }) => {
               )}
             </div>
           )}
+
+          {/* 🔹 Multiple Options CTA */}
+          {!showNotify && !hasSingleCuttingOption && (
+            <div className="flex flex-col items-center gap-1">
+                 <button
+                  onClick={() => setVariantDrawerOpen(true)}
+                  className="bg-emerald-600 px-4 py-2 rounded-full text-sm font-semibold text-white hover:bg-emerald-700 w-full"
+                >
+                  Choose Options
+                </button>
+                 <span className="text-[10px] text-gray-500 font-medium bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                    Multiple options available
+                 </span>
+            </div>
+          )}
+
           {showNotify && (
             <button
               className={`mt-1 w-full rounded-lg border py-2 text-sm font-semibold ${
@@ -214,6 +232,13 @@ const ProductCard = ({ product }) => {
           )}
         </div>
       </div>
+      
+      {/* Variant Selection Drawer */}
+      <VariantSelectionDrawer 
+        open={variantDrawerOpen}
+        setOpen={setVariantDrawerOpen}
+        product={product}
+      />
     </>
   );
 };
