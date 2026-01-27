@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SearchScreen from "@components/search/SearchScreen";
 import { useCategory } from "@hooks/azli_hooks/usecategory";
 import { useProduct } from "@hooks/azli_hooks/useProduct";
+import { useMobileHeader } from "@context/MobileHeaderContext"; // Import
 import { getShowingAttributes } from "@services/AttributeServices";
 import { getGlobalSetting } from "@services/SettingServices";
 
@@ -55,6 +56,47 @@ export default function Search() {
   const [page, setPage] = useState(1);
   const limit = 20;
 
+  // 🔹 Dynamic Title Setting
+  const { setMobileHeaderTitle } = useMobileHeader(); // 👈 Import usage
+
+  useEffect(() => {
+    // console.log("🔍 Search Page Title Logic - ID:", id, "Categories:", categories?.length);
+
+    if (id && categories?.length > 0) {
+      // Find category name
+      // Try string comparison for IDs just in case
+      const currentCategory = categories.find(cat => 
+          String(cat._id) === String(id) || String(cat.id) === String(id) || cat.parent === id
+      ); 
+      
+      // console.log("Category Found:", currentCategory);
+
+      if (currentCategory) {
+        const catName = currentCategory?.name?.en || currentCategory?.name || "Category";
+        setMobileHeaderTitle(catName);
+        return; 
+      }
+    } 
+    
+    if (query) {
+      setMobileHeaderTitle(`Search: ${query}`);
+    } else if (id) { 
+       // ID exists but category not found yet? 
+       // Don't default to "Products" if we are waiting for categories
+       if (categories?.length > 0) {
+          // Categories loaded but ID not found? wierd.
+          setMobileHeaderTitle("Category");
+       } else {
+          // Waiting for categories...
+          // setMobileHeaderTitle("Loading..."); // Optional
+       }
+    } else {
+        // Fallback or "All Categories" if needed, but usually won't hit here for single cat
+        setMobileHeaderTitle("Products");
+    }
+  }, [id, query, categories]);
+
+  // Infinite Scroll setup
   useEffect(() => {
     if (id || query) {
       setPage(1);

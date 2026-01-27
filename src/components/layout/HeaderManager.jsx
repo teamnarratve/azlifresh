@@ -4,15 +4,27 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Navbar from "@layout/navbar/Navbar";
 import MobileHeader from "@components/mobile/MobileHeader";
+import { useCategory } from "@hooks/azli_hooks/usecategory";
+import { useCart } from "@hooks/azli_hooks/useCart";
+import MobileFooter from "@layout/footer/MobileFooter";
 
 const HeaderManager = ({ globalSetting, storeCustomization }) => {
   const pathname = usePathname();
+  const { categories, error: categoryError, handleFetchCategories } = useCategory();
+  const { count } = useCart();
+
+  // Load categories if needed (ensure MobileFooter has data)
+  React.useEffect(() => {
+    if (!categories || categories.length === 0) {
+      handleFetchCategories();
+    }
+  }, []);
 
   // Define Root Pages where the Default Navbar should show on mobile
   // All other pages are considered "Inner" pages and will show the Back Navigation
   const rootRoutes = [
     "/", // Home
-    "/search", // Categories/Search (often treated as main tab)
+    // "/search", // Now treated as inner page for Category/Search results
     "/user/dashboard", // Main Account Screen
     "/auth/login", // Login typically has its own header or default
     "/auth/signup",
@@ -27,6 +39,13 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
 
   return (
     <>
+      <MobileFooter
+        count={count}
+        categories={categories}
+        categoryError={categoryError}
+        globalSetting={globalSetting}
+      />
+
       {/* Mobile Back Header: Visible only on Mobile AND Inner Pages */}
       {!isRootPage && (
         <div className="lg:hidden">

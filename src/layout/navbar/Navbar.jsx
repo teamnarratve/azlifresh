@@ -8,7 +8,7 @@ import NavbarPromo from "@layout/navbar/NavbarPromo";
 import SearchInput from "@components/navbar/SearchInput";
 import NotifyIcon from "@components/navbar/NotifyIcon";
 import ProfileDropDown from "@components/navbar/ProfileDropDown";
-import MobileFooter from "@layout/footer/MobileFooter";
+// import MobileFooter from "@layout/footer/MobileFooter"; // Moved to HeaderManager
 import { useCategory } from "@hooks/azli_hooks/usecategory";
 import { useCart } from "@hooks/azli_hooks/useCart";
 
@@ -81,12 +81,7 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
         categoryError={error}
         loading={loading}
       />
-      <MobileFooter
-        count={cartCount}
-        categories={categories}
-        categoryError={error}
-        globalSetting={globalSetting}
-      />
+      {/* MobileFooter moved to HeaderManager */}
     </div>
   );
 };

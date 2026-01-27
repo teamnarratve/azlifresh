@@ -49,7 +49,7 @@ const SearchScreen = ({ products, attributes, categories, currency }) => {
             {/* <div className="w-full grid grid-col gap-4 grid-cols-1 2xl:gap-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2">
               <Card />
             </div> */}
-            <div className="relative">
+            <div className="relative hidden lg:block">
               <CategoryCarousel categories={categories} />
             </div>
             {productData?.length === 0 ? (
