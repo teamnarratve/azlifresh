@@ -16,8 +16,6 @@ import LoginBottomDrawer from "@components/drawer/LoginBottomDrawer";
 import CartDrawer from "@components/drawer/CartDrawer";
 import { useAuth } from "@hooks/azli_hooks/useCustomAuth";
 
-import MobileAppBanner from "@components/mobile/MobileAppBanner";
-
 const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -41,7 +39,7 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
 
   return (
     <>
-      <MobileAppBanner />
+      
       {/* 🛍 CART DRAWER */}
       <CartDrawer
         currency={globalSetting?.default_currency || "₹"}
