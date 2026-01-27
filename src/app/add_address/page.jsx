@@ -191,221 +191,214 @@ export default function AddAddressForm() {
     }
   };
 
+  const isFormValid = () => {
+    // Basic validation
+    if (!form.full_name || !form.ph_number || !form.pin_code || !form.street_location || !form.district) return false;
+    if (activeTab === "home" && !form.house_building_number) return false;
+    // Add other specific checks if needed
+    return true;
+  };
+
   return (
-    <div className="min-h-screen bg-[#F6F7FB] p-4 md:p-10">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        Add New Address
-      </h1>
+    <div className="min-h-screen bg-gray-50 pb-24">
+      {/* MAP SECTION - Full Width Top */}
+      <div className="bg-white shadow-sm relative">
+        <div
+          ref={mapContainerRef}
+          className="w-full h-48 bg-gray-200"
+        />
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-medium text-gray-700 shadow-sm z-10">
+          Pin your delivery location
+        </div>
+        
+        {/* Current Location Button - Floating over map */}
+        <button
+          type="button"
+          onClick={handleUseCurrentLocation}
+          className="absolute bottom-3 right-3 bg-white px-3 py-2 rounded-lg shadow-md text-green-700 text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors z-10"
+          aria-label="Use current location"
+        >
+          <svg
+            stroke="currentColor"
+            fill="none"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            height="14"
+            width="14"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+          </svg>
+          Use current location
+        </button>
+      </div>
+      
+      {/* ERROR MSG */}
+      {mapError && (
+        <div className="bg-red-50 px-4 py-2 text-xs text-red-600 text-center">
+            {mapError}
+        </div>
+      )}
 
-      {/* ============================
-          GRID - MAP LEFT / FORM RIGHT
-      ============================ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* ----------------- MAP AREA ----------------- */}
-        <div className="rounded-2xl bg-white shadow p-3 h-[380px] md:h-full">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
-            Select Location
-          </h2>
-
-          <div
-            ref={mapContainerRef}
-            className="w-full h-[320px] bg-gray-200 rounded-xl"
-          />
-
-          <div className="mt-3 flex items-center justify-between text-xs text-gray-600">
-            <span>
-              {selectedLocation
-                ? `Lat: ${selectedLocation.lat.toFixed(
-                    5
-                  )}, Lng: ${selectedLocation.lng.toFixed(5)}`
-                : "Tap on the map to select a point"}
-            </span>
-            <button
-              type="button"
-              className="text-[#2A8B45] font-semibold"
-              onClick={handleUseCurrentLocation}
-            >
-              Use current location
-            </button>
-          </div>
-          {mapError && (
-            <p className="text-xs text-red-600 mt-2">{mapError}</p>
-          )}
+      {/* CONTENT CONTAINER */}
+      <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
+        
+        {/* ADDRESS TYPE SELECTOR */}
+        <div className="space-y-2">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide ml-1">Save As</p>
+            <div className="flex bg-gray-100 p-1 rounded-xl">
+                {tabs.map((t) => (
+                <button
+                    key={t.key}
+                    onClick={() => setActiveTab(t.key)}
+                    className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-200 capitalize
+                    ${
+                    activeTab === t.key
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                >
+                    {t.label}
+                </button>
+                ))}
+            </div>
         </div>
 
-        {/* ----------------- FORM AREA ----------------- */}
-        <div className="rounded-2xl bg-white p-5 shadow space-y-5">
-          {/* TABS */}
-          <div className="flex gap-3 mb-3">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition
-                ${
-                  activeTab === t.key
-                    ? "bg-green-600 text-white border-green-600"
-                    : "bg-white text-gray-700 border-gray-300"
-                }`}
-                onClick={() => setActiveTab(t.key)}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+        {/* FORM FIELDS */}
+        <div className="space-y-4">
+             {/* Name & Phone */}
+            <div className="space-y-4">
+                <InputField
+                    label="Full Name"
+                    placeholder="Receiver's Name"
+                    value={form.full_name}
+                    onChange={(e) => updateField("full_name", e.target.value)}
+                />
+                <InputField
+                    label="Phone Number"
+                    placeholder="10-digit mobile number"
+                    value={form.ph_number}
+                    onChange={(e) => updateField("ph_number", e.target.value)}
+                    type="tel"
+                />
+            </div>
 
-          {/* FULL NAME */}
-          <InputField
-            label="Full Name"
-            placeholder="Enter full name"
-            value={form.full_name}
-            onChange={(e) => updateField("full_name", e.target.value)}
-          />
+            {/* House / Flat Details */}
+            <div className="pt-2">
+                 {activeTab === "home" ? (
+                    <InputField
+                    label="House No"
+                    placeholder="No. / Flat / Floor"
+                    value={form.house_building_number}
+                    onChange={(e) =>
+                        updateField("house_building_number", e.target.value)
+                    }
+                    />
+                 ) : (
+                     <div className="grid grid-cols-2 gap-4">
+                        <InputField
+                            label="Apartment"
+                            placeholder="Apt Name"
+                            value={form.apartment_name}
+                            onChange={(e) => updateField("apartment_name", e.target.value)}
+                        />
+                         <InputField
+                            label="Phase/Block"
+                            placeholder="Phase 1"
+                            value={form.phase}
+                            onChange={(e) => updateField("phase", e.target.value)}
+                        />
+                     </div>
+                 )}
+                 
+                 {/* Extra fields for office/other if needed, keeping simple for now based on user request "House No" */}
+                 {activeTab !== "home" && (
+                     <div className="grid grid-cols-3 gap-4 mt-4">
+                         <InputField
+                            label="Block"
+                            placeholder="Blk"
+                            value={form.block}
+                            onChange={(e) => updateField("block", e.target.value)}
+                        />
+                        <InputField
+                            label="Floor"
+                            placeholder="Flr"
+                            value={form.floor_number}
+                            onChange={(e) => updateField("floor_number", e.target.value)}
+                        />
+                        <InputField
+                            label="Room"
+                            placeholder="Rm"
+                            value={form.room_number}
+                            onChange={(e) => updateField("room_number", e.target.value)}
+                        />
+                     </div>
+                 )}
+            </div>
 
-          {/* PHONE */}
-          <InputField
-            label="Phone Number"
-            placeholder="Enter phone number"
-            value={form.ph_number}
-            onChange={(e) => updateField("ph_number", e.target.value)}
-          />
+            {/* Street & Landmark */}
+            <div className="space-y-4">
+                <InputField
+                    label="Street / Location"
+                    placeholder="Street name, Area"
+                    value={form.street_location}
+                    onChange={(e) => updateField("street_location", e.target.value)}
+                />
+                <InputField
+                    label="Landmark (Optional)"
+                    placeholder="Near Apollo Pharmacy"
+                    value={form.landmark}
+                    onChange={(e) => updateField("landmark", e.target.value)}
+                />
+            </div>
 
-          {/* PINCODE */}
-          <InputField
-            label="Pincode"
-            placeholder="Enter pin code"
-            value={form.pin_code}
-            onChange={(e) => updateField("pin_code", e.target.value)}
-          />
+            {/* Pincode & District */}
+            <div className="grid grid-cols-2 gap-4">
+                <InputField
+                    label="Pincode"
+                    placeholder="560001"
+                    value={form.pin_code}
+                    onChange={(e) => updateField("pin_code", e.target.value)}
+                    type="number"
+                />
+                <InputField
+                    label="District"
+                    placeholder="Bangalore"
+                    value={form.district}
+                    onChange={(e) => updateField("district", e.target.value)}
+                />
+            </div>
+        </div>
 
-          {/* HOME ONLY FIELD */}
-          {activeTab === "home" && (
-            <InputField
-              label="House No"
-              placeholder="Enter house number"
-              value={form.house_building_number}
-              onChange={(e) =>
-                updateField("house_building_number", e.target.value)
-              }
-            />
-          )}
+      </div>
 
-          {/* STREET */}
-          <InputField
-            label="Street / Location"
-            placeholder="Enter street or location"
-            value={form.street_location}
-            onChange={(e) => updateField("street_location", e.target.value)}
-          />
-
-          {/* DISTRICT */}
-          <InputField
-            label="District"
-            placeholder="Enter district"
-            value={form.district}
-            onChange={(e) => updateField("district", e.target.value)}
-          />
-
-          {/* LANDMARK */}
-          <InputField
-            label="Landmark (optional)"
-            placeholder="Enter landmark"
-            value={form.landmark}
-            onChange={(e) => updateField("landmark", e.target.value)}
-          />
-
-          {/* OFFICE TAB FIELDS */}
-          {activeTab === "office" && (
-            <>
-              <InputField
-                label="Phase"
-                value={form.phase}
-                placeholder="Enter phase"
-                onChange={(e) => updateField("phase", e.target.value)}
-              />
-              <InputField
-                label="Block"
-                value={form.block}
-                placeholder="Enter block"
-                onChange={(e) => updateField("block", e.target.value)}
-              />
-              <InputField
-                label="Room No"
-                value={form.room_number}
-                placeholder="Enter room number"
-                onChange={(e) => updateField("room_number", e.target.value)}
-              />
-              <InputField
-                label="Lift Floor No"
-                value={form.lift_floor_number}
-                placeholder="Enter lift floor number"
-                onChange={(e) =>
-                  updateField("lift_floor_number", e.target.value)
-                }
-              />
-            </>
-          )}
-
-          {/* OTHER TAB FIELDS */}
-          {activeTab === "other" && (
-            <>
-              <InputField
-                label="Apartment Name"
-                value={form.apartment_name}
-                placeholder="Enter apartment"
-                onChange={(e) => updateField("apartment_name", e.target.value)}
-              />
-              <InputField
-                label="Phase"
-                value={form.phase}
-                placeholder="Enter phase"
-                onChange={(e) => updateField("phase", e.target.value)}
-              />
-              <InputField
-                label="Block"
-                value={form.block}
-                placeholder="Enter block"
-                onChange={(e) => updateField("block", e.target.value)}
-              />
-              <InputField
-                label="Room No"
-                value={form.room_number}
-                placeholder="Enter room"
-                onChange={(e) => updateField("room_number", e.target.value)}
-              />
-              <InputField
-                label="Lift Floor No"
-                value={form.lift_floor_number}
-                placeholder="Enter lift floor number"
-                onChange={(e) =>
-                  updateField("lift_floor_number", e.target.value)
-                }
-              />
-            </>
-          )}
-
-          {/* SAVE BUTTON */}
-          <button
-            onClick={() => {
-              console.log("🟩 Save Button Pressed");
-              handleSave();
-            }}
-            className="w-full bg-green-600 text-white py-3 rounded-xl text-sm font-semibold shadow mt-4"
-          >
-            Save Address
-          </button>
+      {/* STICKY BOTTOM BUTTON */}
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 z-50 safe-area-bottom">
+        <div className="max-w-lg mx-auto">
+            <button
+                onClick={handleSave}
+                disabled={!isFormValid()}
+                className="w-full bg-green-600 text-white py-3.5 rounded-xl text-base font-semibold shadow-lg shadow-green-100 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-all"
+            >
+                Save Address
+            </button>
         </div>
       </div>
     </div>
   );
 }
 
-/* Reusable Input Component */
-const InputField = ({ label, placeholder, value, onChange }) => (
-  <div className="space-y-1">
-    <p className="text-sm font-medium text-gray-700">{label}</p>
+/* Reusable Input Component - Refined */
+const InputField = ({ label, placeholder, value, onChange, type = "text" }) => (
+  <div className="space-y-1.5 group">
+    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide ml-1 group-focus-within:text-green-600 transition-colors">
+        {label}
+    </label>
     <input
-      type="text"
-      className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-green-500 outline-none"
+      type={type}
+      className="w-full bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all shadow-sm"
       placeholder={placeholder}
       value={value}
       onChange={onChange}

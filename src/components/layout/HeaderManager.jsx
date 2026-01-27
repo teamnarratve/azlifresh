@@ -59,7 +59,6 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
           </div>
         </>
       )}
-      {!isRootPage && <div className="h-14 mb-3 lg:hidden" />} 
 
       {/* Default Navbar: Visible on Desktop OR (Mobile AND Root Pages) */}
       

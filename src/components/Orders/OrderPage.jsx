@@ -23,12 +23,6 @@ const OrdersPage = () => {
     <div className="min-h-screen bg-[#F6F7FB] w-full">
       <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-10">
 
-        <header className="pt-6 pb-2 flex items-center justify-between">
-          <h1 className="text-xl md:text-2xl font-semibold text-gray-900">
-            My Orders
-          </h1>
-        </header>
-
         <div className="flex gap-6 border-b border-gray-200 mt-3">
           <button
             onClick={() => setTab("ongoing")}

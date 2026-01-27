@@ -195,16 +195,7 @@ export default function AddressPage() {
   return (
     <div className="min-h-screen bg-[#F6F7FB]">
       <div className="mx-auto max-w-screen-md px-4 pb-16 pt-6">
-        <div className="mb-5 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:bg-gray-50"
-          >
-            <FiArrowLeft className="h-5 w-5" />
-          </button>
-          <h1 className="text-2xl font-semibold text-gray-900">Addresses</h1>
-        </div>
+
 
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
           <div className="border-b border-gray-200 px-5 py-4">
