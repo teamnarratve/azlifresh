@@ -35,6 +35,8 @@ import { useProduct } from "@hooks/azli_hooks/useProduct";
 import CuttingCard from "@components/product/CuttingCard";
 import CheckoutCartScreen from "@components/checkout/CheckoutCartScreen";
 import { useMobileHeader } from "@context/MobileHeaderContext"; // Import
+import CustomizationBottomDrawer from "@components/drawer/CustomizationBottomDrawer"; // Import
+import { FiInfo } from "react-icons/fi"; // Import
 
 const ProductScreen = ({ product, reviews, relatedProducts }) => {
   const { globalSetting, storeCustomization } = useSetting();
@@ -97,105 +99,11 @@ const ProductScreen = ({ product, reviews, relatedProducts }) => {
 
   return (
     <>
-      {isCustomizationOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-          <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-xl">
-            <button
-              type="button"
-              onClick={() => setIsCustomizationOpen(false)}
-              aria-label="Close"
-              className="absolute right-3 top-3 rounded-full bg-gray-100 p-2 text-gray-700 hover:bg-gray-200"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div
-              id="downloadApp"
-              className="bg-indigo-50 py-8 lg:py-10 bg-repeat bg-center overflow-hidden"
-            >
-              <div className="max-w-screen-2xl mx-auto px-4 sm:px-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2 md:gap-3 lg:gap-3 items-center">
-                  <div className="flex-grow hidden lg:flex md:flex md:justify-items-center lg:justify-start">
-                    <Image
-                      src="/app-download-img-left.png"
-                      alt="app download"
-                      width={500}
-                      height={394}
-                      priority
-                      className="block w-auto"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3">
-                      Get Your Needs From Our MY AZLI FRESH Store
-                    </h3>
-                    <p className="text-base opacity-90 leading-7">
-                      There are many products you will find in our App, Choose
-                      your product from our MY AZLI FRESH APP
-                      and get some special offers.
-                    </p>
-                    <div className="mt-8 flex mx-auto justify-center text-center">
-                      <Link
-                        href="https://apps.apple.com/ae/app/my-azli-fresh/id1668533922"
-                        className="mx-2"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          width="0"
-                          height="0"
-                          sizes="100vw"
-                          className="w-full h-auto"
-                          src="/app/app-store.svg"
-                          alt="app store"
-                        />
-                      </Link>
-                      <Link
-                        href="https://play.google.com/store/apps/details?id=com.repad.asli&hl=en_IN"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          width="0"
-                          height="0"
-                          sizes="100vw"
-                          className="w-full h-auto"
-                          src="/app/play-store.svg"
-                          alt="play store"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="md:hidden lg:block">
-                    <div className="flex-grow hidden lg:flex md:flex lg:justify-end">
-                      <Image
-                        src="/app-download-img.png"
-                        width={500}
-                        height={394}
-                        priority
-                        alt="app download"
-                        className="block w-auto"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <CustomizationBottomDrawer 
+            open={isCustomizationOpen} 
+            setOpen={setIsCustomizationOpen} 
+       />
+
       <div className="bg-white px-0">
         <div className="container mx-auto px-3 sm:px-10 max-w-screen-2xl">
        
@@ -263,40 +171,28 @@ const ProductScreen = ({ product, reviews, relatedProducts }) => {
                     </div>
 
                     {(isWhole || isSmall) && (
-                      <div className="mt-6 w-full mb-6"    onClick={() => setIsCustomizationOpen(true)}>
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-green-400 via-emerald-400 to-lime-300 shadow-md hover:shadow-lg transition-all duration-300">
-                          {/* Left: Illustration (replace with your SVG or image) */}
-                          <div className="flex items-center gap-3">
+                      <div className="mt-6 w-full mb-6" onClick={() => setIsCustomizationOpen(true)}>
+                        <div className="flex items-center justify-between p-4 rounded-xl bg-blue-50 border border-blue-100 cursor-pointer active:scale-[0.98] transition-all">
+                          {/* Left: Content */}
+                          <div className="flex items-start gap-3">
+                            <div className="mt-1">
+                               <FiInfo className="text-[#124b8a] w-5 h-5" />
+                            </div>
                             <div>
-                              <h4 className="text-white font-semibold text-lg">
-                                Customize Your Own!
+                              <h4 className="text-[#124b8a] font-semibold text-sm">
+                                Need Specific Cuts?
                               </h4>
-                              <p className="text-white/90 text-sm">
-                                Download our app to customize to your
-                                preference.
+                              <p className="text-gray-600 text-xs mt-1 leading-relaxed">
+                                Customize weight, cut style, and cleaning in our mobile app.
                               </p>
                             </div>
                           </div>
 
-                          {/* Right: Add icon or button */}
+                          {/* Right: CTA */}
                           <button
-                            className="text-white bg-white/20 hover:bg-white/30 rounded-full p-2 transition"
-                         
+                            className="bg-white text-[#124b8a] text-xs font-bold px-3 py-2 rounded-lg border border-blue-100 shadow-sm shrink-0 whitespace-nowrap"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-5 h-5"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 4v16m8-8H4"
-                              />
-                            </svg>
+                             App Only
                           </button>
                         </div>
                       </div>
