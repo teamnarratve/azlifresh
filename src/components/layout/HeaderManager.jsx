@@ -48,8 +48,8 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
         globalSetting={globalSetting}
       />
 
-      {/* Mobile Back Header: Visible only on Mobile AND Inner Pages */}
-      {!isRootPage && (
+      {/* Mobile Back Header: Visible only on Mobile AND Inner Pages AND NOT Cart */}
+      {!isRootPage && pathname !== "/cart" && (
         <>
           <div className="lg:hidden">
             <AppDownloadBar />

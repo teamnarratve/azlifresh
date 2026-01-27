@@ -34,59 +34,68 @@ const CartItem = ({ item, currency }) => {
   };
 
   return (
-    <div className="group w-full h-auto flex justify-start items-center py-4 transition-all relative border-b border-gray-200 last:border-b-0">
-      <div className="relative flex overflow-hidden flex-shrink-0 cursor-pointer mr-4">
+    <div className="group w-full h-auto flex justify-start items-start py-3 bg-white rounded-xl border border-gray-100 shadow-sm relative overflow-hidden">
+      {/* 1. PRODUCT IMAGE */}
+      <div className="relative flex overflow-hidden flex-shrink-0 cursor-pointer ml-3 mt-1">
         <ImageWithFallback
-          width={40}
-          height={40}
+          width={60}
+          height={60}
           src={image}
           alt={title}
-          className="size-20 flex-none rounded-md bg-gray-100 object-cover"
+          className="size-16 flex-none rounded-lg bg-gray-50 object-cover border border-gray-100"
         />
       </div>
 
-      <div className="flex flex-col w-full overflow-hidden">
-        <div className="flex">
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
-              {title}
-            </p>
-
-            <span className="text-xs text-gray-400 mb-1">
-              Item Price {currency}
-              {price}
-            </span>
-          </div>
-
-          <div className="ml-4 shrink-0">
+      {/* 2. PRODUCT DETAILS */}
+      <div className="flex flex-col w-full pl-3 pr-3">
+        <div className="flex justify-between items-start">
+            <div className="min-w-0 pr-2">
+                <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 leading-tight">
+                    {title}
+                </h3>
+                {item.variant && (
+                     <p className="text-xs text-gray-500 mt-0.5">{item.variant.name}</p>
+                )}
+                <div className="mt-1 font-medium text-xs text-gray-500">
+                    {currency}{price} / unit
+                </div>
+            </div>
+            
+            {/* REMOVE BUTTON - Compact Top Right */}
             <button
-              onClick={handleRemove}
-              className="hover:text-red-600 text-red-400 text-lg cursor-pointer"
+               onClick={handleRemove}
+               className="text-gray-400 hover:text-red-500 p-1 -mr-1 transition-colors"
+               aria-label="Remove item"
             >
-              <FiTrash2 />
+                <FiTrash2 className="w-4 h-4" />
             </button>
-          </div>
         </div>
 
-        {/* Price × Quantity */}
-        <div className="flex items-center justify-between">
-          <div className="font-bold text-teal-600 text-sm md:text-base">
-            {currency}
-            {(price * item.quantity).toFixed(2)}
-          </div>
+        {/* 3. QUANTITY & TOTAL ROW */}
+        <div className="flex items-end justify-between mt-3">
+            {/* Quantity Stepper */}
+            <div className="flex items-center h-8 bg-gray-50 rounded-lg border border-gray-200">
+                <button 
+                    onClick={handleDecrease}
+                    className="w-8 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-l-lg transition"
+                >
+                    <FiMinus className="w-3 h-3" />
+                </button>
+                <span className="w-8 text-center text-sm font-semibold text-gray-900">{item.quantity}</span>
+                <button 
+                    onClick={handleIncrease}
+                    className="w-8 h-full flex items-center justify-center text-green-600 hover:bg-green-50 rounded-r-lg transition"
+                >
+                    <FiPlus className="w-3.5 h-3.5" />
+                </button>
+            </div>
 
-          {/* Quantity buttons */}
-          <div className="h-8 w-22 flex items-center justify-evenly p-1 border border-gray-100 bg-white text-gray-600 rounded-full">
-            <button onClick={handleDecrease}>
-              <FiMinus className="cursor-pointer hover:bg-gray-100" />
-            </button>
-
-            <p className="text-sm font-semibold px-1">{item.quantity}</p>
-
-            <button onClick={handleIncrease}>
-              <FiPlus className="cursor-pointer hover:bg-gray-100" />
-            </button>
-          </div>
+            {/* Line Item Total */}
+            <div className="text-right">
+                <p className="text-sm font-bold text-gray-900">
+                    {currency}{(price * item.quantity).toFixed(2)}
+                </p>
+            </div>
         </div>
       </div>
     </div>

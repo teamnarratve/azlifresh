@@ -108,7 +108,7 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
 
           {/* 🛒 Cart Drawer */}
           <button
-            onClick={() => setOpenCartDrawer(true)}
+            onClick={() => router.push("/cart")}
             className="flex flex-col items-center justify-center relative"
           >
             {count > 0 && (
@@ -118,14 +118,14 @@ const MobileFooter = ({ globalSetting, categories, categoryError, count }) => {
             )}
             <FiShoppingCart
               className={`w-6 h-6 ${
-                openCartDrawer || pathname.includes("/cart")
+                pathname.includes("/cart")
                   ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
             />
             <span
               className={`text-[11px] font-medium mt-1 ${
-                openCartDrawer || pathname.includes("/cart")
+               pathname.includes("/cart")
                   ? "text-[#124b8a]"
                   : "text-gray-500"
               }`}
