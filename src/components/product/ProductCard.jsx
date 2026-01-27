@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { IoAdd, IoRemove } from "react-icons/io5";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import ImageWithFallback from "@components/common/ImageWithFallBack";
 import { notifyError } from "@utils/toast";
 import { useSetting } from "@context/SettingContext";
@@ -15,15 +15,20 @@ import Stock from "@components/common/Stock";
 import Rating from "@components/common/Rating";
 import { useCart } from "@hooks/azli_hooks/useCart";
 import VariantSelectionDrawer from "@components/drawer/VariantSelectionDrawer"; // Import Drawer
+import AppDownloadDrawer from "@components/drawer/AppDownloadDrawer";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, attributes, currency }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const modalRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [variantDrawerOpen, setVariantDrawerOpen] = useState(false); // New State
+  const [appDrawerOpen, setAppDrawerOpen] = useState(false); // New State
   const { globalSetting } = useSetting();
 
-  const { cartList, handleAddItem, handleUpdateQuantity, isLoggedIn } = useCart();
-  const currency = globalSetting?.default_currency || "₹";
+  const { cartList, handleAddItem, handleUpdateQuantity, isLoggedIn, isInCart } = useCart();
+  const defaultCurrency = globalSetting?.default_currency || "₹";
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
 
   // 🧠 Debug
@@ -42,37 +47,40 @@ const ProductCard = ({ product }) => {
   const stock = product?.stock || 0;
   const stock_status = product?.stock_status;
   const showNotify = stock === 0 || stock_status === false;
+
   const isAppOnlyProduct =
     Array.isArray(product?.fish_cutting_options) &&
     product.fish_cutting_options.length > 0 &&
     product.fish_cutting_options.every(
       (option) => option?.normal_visible === false
     );
-  const hasSingleCuttingOption =
-    Array.isArray(product?.fish_cutting_options) &&
-    product.fish_cutting_options.length === 1;
-  const singleCuttingOption = hasSingleCuttingOption
-    ? product.fish_cutting_options[0]
-    : null;
 
-  const cartItem = hasSingleCuttingOption
-    ? cartList.find(
-        (item) => item.cart_product_option_data?.id === singleCuttingOption?.id
-      )
-    : null;
-  // useEffect(() => {
-  //   console.log("🔹 stock_status of :",productName ,  stock);
-  // }, [stock]);
+  const hasOptions = Array.isArray(product?.fish_cutting_options) && product.fish_cutting_options.length > 0;
+  // If ALL options are hidden (App Only), treat as Variable? Or treat as Out of Stock?
+  // Existing logic for isAppOnlyProduct handles the "Notify/AppOnly" button.
+  // But for CTA:
+  // If isAppOnlyProduct is true, showNotify is NOT necessarily true (unless stock also 0).
+  // Wait, `isAppOnlyProduct` logic was used to show "APP ONLY PRODUCT" button.
+  // The User didn't specify changing App Only logic.
+  
+  // Refined isVariableProduct:
+  const isVariableProduct = hasOptions && product.fish_cutting_options.length > 1;
+  
+  // Simple product: Valid product with 0 or 1 option (treat 0 as flat product)
+  const productOptionId = hasOptions ? product.fish_cutting_options[0].id : productId; // Fallback to productId
+
+  const cartItem = cartList.find((item) => {
+     if (isVariableProduct) return false; 
+     return item.cart_product_option_data?.id === productOptionId;
+  });
 
   // 🛒 Add-to-cart handler
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const currentPath = searchParams?.toString()
     ? `${pathname}?${searchParams.toString()}`
     : pathname;
 
   const handleAddToCartWithRedirect = async () => {
-    if (!singleCuttingOption || showNotify) return;
+    if (showNotify) return;
 
     if (product?.stock < 1) {
       notifyError("Out of stock!");
@@ -88,7 +96,7 @@ const ProductCard = ({ product }) => {
 
     await handleAddItem({
       product_id: productId,
-      product_option_id: singleCuttingOption.id,
+      product_option_id: productOptionId, // Use the determined ID
       quantity: 1,
       redirect: currentPath,
     });
@@ -180,32 +188,61 @@ const ProductCard = ({ product }) => {
               originalPrice={originalPrice}
             />
           )}
-            {!showNotify && hasSingleCuttingOption && (
-            <div className="flex justify-center">
-              {cartItem ? (
-                <div className="flex items-center gap-2 bg-emerald-600 text-white px-2 py-[2px] rounded-full text-sm w-fit">
-                  <button onClick={handleDecrease}>
-                    <IoRemove />
-                  </button>
-                  <span className="font-medium">{cartItem.quantity}</span>
-                  <button onClick={handleIncrease}>
-                    <IoAdd />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={handleAddToCartWithRedirect}
-                  className="bg-emerald-600 px-4 py-2 rounded-full text-sm font-semibold text-white hover:bg-emerald-700 w-fit"
+
+          {/* App Only Handling */}
+          {!showNotify && isAppOnlyProduct && (
+               <div className="flex flex-col items-center gap-1 w-full">
+                 <button
+                  onClick={() => setAppDrawerOpen(true)}
+                  className="bg-white border border-[#124b8a] text-[#124b8a] px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-50 w-full"
                 >
-                  ADD
+                  Get app
                 </button>
+                 <span className="text-[10px] text-[#124b8a] font-medium bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                    App only
+                 </span>
+            </div>
+          )}
+
+          {!showNotify && !isVariableProduct && !isAppOnlyProduct && (
+            <div className="flex justify-center w-full">
+              {/* Home Page: View Details (No Add to Cart) */}
+              {pathname === "/" ? (
+                <Link
+                  href={`/product?productId=${productId}`}
+                  className="bg-emerald-600 px-4 py-2 rounded-full text-sm font-semibold text-white hover:bg-emerald-700 w-full text-center"
+                >
+                  View details
+                </Link>
+              ) : (
+                /* Other Pages: Add to Cart / Counter */
+                <>
+                  {cartItem ? (
+                    <div className="flex items-center gap-2 bg-emerald-600 text-white px-2 py-[2px] rounded-full text-sm w-fit">
+                      <button onClick={handleDecrease}>
+                        <IoRemove />
+                      </button>
+                      <span className="font-medium">{cartItem.quantity}</span>
+                      <button onClick={handleIncrease}>
+                        <IoAdd />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleAddToCartWithRedirect}
+                      className="bg-emerald-600 px-4 py-2 rounded-full text-sm font-semibold text-white hover:bg-emerald-700 w-fit"
+                    >
+                      ADD
+                    </button> // 299: Fixed line formatting
+                  )}
+                </>
               )}
             </div>
           )}
 
           {/* 🔹 Multiple Options CTA */}
-          {!showNotify && !hasSingleCuttingOption && (
-            <div className="flex flex-col items-center gap-1">
+          {!showNotify && isVariableProduct && !isAppOnlyProduct && (
+            <div className="flex flex-col items-center gap-1 w-full">
                  <button
                   onClick={() => setVariantDrawerOpen(true)}
                   className="bg-emerald-600 px-4 py-2 rounded-full text-sm font-semibold text-white hover:bg-emerald-700 w-full"
@@ -235,9 +272,15 @@ const ProductCard = ({ product }) => {
       
       {/* Variant Selection Drawer */}
       <VariantSelectionDrawer 
-        open={variantDrawerOpen}
-        setOpen={setVariantDrawerOpen}
+        open={variantDrawerOpen} 
+        setOpen={setVariantDrawerOpen} 
+        variants={product?.fish_cutting_options || []}
         product={product}
+        currency={currency}
+      />
+      <AppDownloadDrawer 
+        open={appDrawerOpen} 
+        setOpen={setAppDrawerOpen} 
       />
     </>
   );
