@@ -34,42 +34,64 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
   // }, [categories]);
 
   return (
-    <div className="lg:sticky lg:z-20 lg:top-0 w-full">
+    <div className="w-full">
       {/* navbar top section */}
       <TopNavbar storeCustomization={storeCustomization} />
 
-      <header as="header" className="bg-white shadow border-b border-gray-200">
+      {/* MOBILE ONLY: Location & Logo Row (Scrolls Away) */}
+      <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-b border-gray-50">
+          <div className="flex items-center gap-1">
+             <span className="text-xs font-bold text-gray-800">Select Location</span>
+             <svg 
+               className="w-3.5 h-3.5 text-gray-600" 
+               fill="none" 
+               viewBox="0 0 24 24" 
+               stroke="currentColor"
+             >
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+             </svg>
+          </div>
+          <Link href="/">
+             <img
+               className="h-6 w-auto"
+               src="/xpress.png"
+               alt="azli"
+             />
+          </Link>
+      </div>
+
+      <header as="header" className="relative bg-white shadow-sm lg:static lg:shadow lg:border-b lg:border-gray-200">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 lg:divide-y lg:divide-gray-200">
-          <div className="relative flex h-16 lg:h-20 justify-between">
-            <div className="relative z-10 flex px-2 lg:px-0">
-              {/* asli logo */}
+          <div className="relative flex h-auto lg:h-20 justify-between items-center py-2 lg:py-0">
+            
+            {/* Logo (Desktop Only) */}
+            <div className="hidden lg:flex relative z-10 px-2 lg:px-0">
               <Link href="/" className="flex flex-shrink-0 items-center">
                 <img
-                  className="h-8 w-auto px-2"
-                  src="/logo/azli_small_icon.png"
+                  className="h-8 w-auto"
+                  src="/xpress.png"
                   alt="azli"
                 />
               </Link>
             </div>
 
-            {/* search input section */}
-            <div className="min-w-0 flex-1 md:px-8 lg:px-10 xl:col-span-6">
-              <div className="flex items-center px-4 py-2 lg:py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
+            {/* Search Input Section (Mobile: Full Width, Desktop: Center) */}
+            <div className="w-full lg:w-auto min-w-0 flex-1 md:px-8 lg:px-10 xl:col-span-6">
+              <div className="flex items-center px-0 lg:px-6 py-0 lg:py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                 <div className="w-full">
                   <SearchInput />
                 </div>
               </div>
             </div>
 
-            {/* notification icons */}
-            <div className="lg:relative lg:z-10 sm:flex sm:items-center hidden">
+            {/* Notification Icons (Desktop Only) */}
+            <div className="hidden lg:relative lg:z-10 sm:flex sm:items-center">
               <NotifyIcon count={cartCount} currency={currency} />
-
-              {/* Profile dropdown */}
               <div className="relative ml-4 flex-shrink-0">
                 <ProfileDropDown />
               </div>
             </div>
+
           </div>
         </div>
       </header>

@@ -79,7 +79,7 @@ const HeaderManager = ({ globalSetting, storeCustomization }) => {
           </div>
       )}
 
-      <div className={`${!isRootPage ? "hidden lg:block" : "block"} sticky top-0 z-30`}>
+      <div className={`${!isRootPage ? "hidden lg:block" : "block"} sticky -top-[41px] lg:top-0 z-30 transition-all`}>
         {/* Navbar is internally sticky on Desktop (lg:sticky), but wrapper forces sticky on Mobile too */}
         <div className="flex flex-col">
              <Navbar
