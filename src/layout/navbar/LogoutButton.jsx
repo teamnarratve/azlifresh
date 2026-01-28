@@ -17,7 +17,7 @@ const LogoutButton = ({ storeCustomization }) => {
     dispatch(logout());          // clear redux auth
     localStorage.removeItem("authToken"); // remove token
     document.cookie = "api_key=; Max-Age=0; path=/"; // remove cookie
-    router.push("/auth/login");  // redirect to login
+    router.push("/user/dashboard");  // redirect to login
   };
 
   return (

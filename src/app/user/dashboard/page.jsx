@@ -29,7 +29,7 @@ export default function Dashboard() {
     dispatch(logout());
     localStorage.removeItem("authToken");
     document.cookie = "api_key=; Max-Age=0; path=/";
-    router.push("/auth/login");
+    router.push("/user/dashboard");
   };
 
   const handleOpenLogin = () => {
@@ -132,37 +132,37 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-24 lg:pt-10">
-      <div className="container mx-auto max-w-screen-md">
+    <div className="bg-gray-50 min-h-screen pb-24 pt-2 lg:pt-10">
+      <div className="container mx-auto max-w-screen-md space-y-3 px-2">
         
         {/* Profile Header */}
-        <div className="bg-white p-6 mb-2 border-b border-gray-100 flex items-center justify-between">
+        <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-[#124b8a]/10 flex items-center justify-center text-[#124b8a]">
-                    <FiUser className="w-8 h-8" />
+                <div className="w-14 h-14 rounded-full bg-[#124b8a]/10 flex items-center justify-center text-[#124b8a]">
+                    <FiUser className="w-7 h-7" />
                 </div>
                 <div>
-                   <h1 className="text-xl font-bold text-gray-900">
+                   <h1 className="text-lg font-bold text-gray-900">
                      {profile?.first_name ? `${profile?.first_name} ${profile?.last_name || ''}` : 'User'}
                    </h1>
                    <p className="text-sm text-gray-500 font-medium">{profile?.mobile}</p>
                 </div>
             </div>
-            <Link href="/user/update-profile" className="p-2 text-gray-400 hover:text-[#124b8a] transition-colors">
-               <FiEdit2 className="w-5 h-5" />
+            <Link href="/user/update-profile" className="p-2 text-gray-400 hover:text-[#124b8a] transition-colors bg-gray-50 rounded-lg">
+               <FiEdit2 className="w-4 h-4" />
             </Link>
         </div>
 
         {/* Primary Actions */}
-        <div className="bg-white mb-2 divide-y divide-gray-50 border-y border-gray-100">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-50">
             {primaryActions.map((item, idx) => (
                <ListItem key={idx} item={item} />
             ))}
         </div>
 
         {/* Payments & Rewards */}
-        <div className="bg-white mb-2 border-y border-gray-100">
-             <div className="px-4 py-2 bg-gray-50/50 border-b border-gray-100">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+             <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Payments & Rewards</h3>
              </div>
              <div className="divide-y divide-gray-50">
@@ -173,8 +173,8 @@ export default function Dashboard() {
         </div>
 
         {/* Support & About */}
-        <div className="bg-white mb-6 border-y border-gray-100">
-             <div className="px-4 py-2 bg-gray-50/50 border-b border-gray-100">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+             <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Support & About</h3>
              </div>
              <div className="divide-y divide-gray-50">
