@@ -134,7 +134,7 @@ const Home = () => {
 
       {/* Category Carousel */}
 
-      <div className="bg-white dark:bg-zinc-800 lg:py-16 py-10">
+      <div className="bg-white dark:bg-zinc-800 lg:py-6 py-4">
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           {/* <div className="mb-10 flex justify-center">
             <div className="text-center w-full lg:w-2/5">
@@ -162,6 +162,19 @@ const Home = () => {
           </Suspense>
         </div>
       </div>
+      {/* Freshness Banner */}
+      <div className="w-full bg-white dark:bg-zinc-800 pb-2 lg:pb-8">
+        <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+          <div className="w-full relative rounded-xl overflow-hidden cursor-pointer">
+             <img 
+               src="/freshness.png" 
+               alt="Freshness Guarantee" 
+               className="w-full h-auto object-cover rounded-xl"
+             />
+          </div>
+        </div>
+      </div>
+
       {/* <div className="relative">
         <CategoryCarousel />
       </div> */}

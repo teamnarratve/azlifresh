@@ -104,7 +104,7 @@ const ProductScreen = ({ product, reviews, relatedProducts }) => {
             setOpen={setIsCustomizationOpen} 
        />
 
-      <div className="bg-white px-0">
+      <div className="bg-white px-0 pt-2 lg:pt-0">
         <div className="container mx-auto px-3 sm:px-10 max-w-screen-2xl">
        
           {/* Product */}
