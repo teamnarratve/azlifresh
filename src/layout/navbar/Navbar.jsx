@@ -40,12 +40,12 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
 
       <header as="header" className="bg-white shadow border-b border-gray-200">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 lg:divide-y lg:divide-gray-200">
-          <div className="relative flex h-20 justify-between">
+          <div className="relative flex h-16 lg:h-20 justify-between">
             <div className="relative z-10 flex px-2 lg:px-0">
               {/* asli logo */}
               <Link href="/" className="flex flex-shrink-0 items-center">
                 <img
-                  className="h-8 w-auto"
+                  className="h-8 w-auto px-2"
                   src="/logo/azli_small_icon.png"
                   alt="azli"
                 />
@@ -54,7 +54,7 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
 
             {/* search input section */}
             <div className="min-w-0 flex-1 md:px-8 lg:px-10 xl:col-span-6">
-              <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
+              <div className="flex items-center px-4 py-2 lg:py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                 <div className="w-full">
                   <SearchInput />
                 </div>
