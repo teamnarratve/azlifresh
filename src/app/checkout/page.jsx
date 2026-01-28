@@ -28,9 +28,9 @@ export const metadata = {
 
 const Checkout = async () => {
   return (
-    <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+    <>
       <CheckoutForm />
-    </div>
+    </>
   );
 };
 
