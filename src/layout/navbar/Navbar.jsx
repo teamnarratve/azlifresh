@@ -39,7 +39,7 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
       <TopNavbar storeCustomization={storeCustomization} />
 
       {/* MOBILE ONLY: Location & Logo Row (Scrolls Away) */}
-      <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-b border-gray-50">
+      <div className="lg:hidden flex items-center justify-between px-4 py-1 bg-white">
           <div className="flex items-center gap-1">
              <span className="text-xs font-bold text-gray-800">Select Location</span>
              <svg 
@@ -53,16 +53,16 @@ const Navbar = ({ globalSetting, storeCustomization }) => {
           </div>
           <Link href="/">
              <img
-               className="h-6 w-auto"
+               className="h-8 w-auto px-1"
                src="/xpress.png"
                alt="azli"
              />
           </Link>
       </div>
 
-      <header as="header" className="relative bg-white shadow-sm lg:static lg:shadow lg:border-b lg:border-gray-200">
+      <header as="header" className="relative bg-white border-b border-gray-100 lg:static lg:shadow lg:border-b lg:border-gray-200">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 lg:divide-y lg:divide-gray-200">
-          <div className="relative flex h-auto lg:h-20 justify-between items-center py-2 lg:py-0">
+          <div className="relative flex h-auto lg:h-20 justify-between items-center py-1 lg:py-0">
             
             {/* Logo (Desktop Only) */}
             <div className="hidden lg:flex relative z-10 px-2 lg:px-0">
