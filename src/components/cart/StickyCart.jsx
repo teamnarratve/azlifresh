@@ -23,7 +23,7 @@ const StickyCart = ({ currency, count, totalAmount }) => {
   }
 
   return (
-    <div className="fixed bottom-16 left-0 w-full px-4 z-40 lg:hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
+    <div className="fixed bottom-[74px] left-0 w-full px-4 z-40 lg:hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
       <button
         onClick={() => router.push("/cart")}
         className="w-full bg-green-900/95 backdrop-blur-md text-white shadow-lg shadow-green-900/20 rounded-xl p-3 flex items-center justify-between border border-green-800"
