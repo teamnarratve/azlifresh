@@ -49,7 +49,8 @@ export default async function RootLayout({ children }) {
               />
               
               {/* pt-14 removed, handled by HeaderManager spacers */}
-              <main className="bg-gray-50 dark:bg-zinc-900 z-10">
+              {/* Added safe bottom padding for Mobile (Footer + Sticky Cart) */}
+              <main className="bg-gray-50 dark:bg-zinc-900 z-10 pb-36 lg:pb-0">
                 {children}
               </main>
 
