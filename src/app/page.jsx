@@ -29,6 +29,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import Lottie from "lottie-react";
+import fryingPanAnimation from "../data/frying-pan.json";
 
 const isOutOfStock = (item) => {
   const stock = item?.stock ?? 0;
@@ -238,64 +241,48 @@ const Home = () => {
 
       <div
         id="discount"
-        className="bg-gray-50 dark:bg-zinc-800 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
+        className="bg-[#FFF5F2] dark:bg-zinc-800 lg:py-16 py-8 mx-auto max-w-screen-2xl px-3 sm:px-10"
       >
-        <div className="mb-4 lg:mb-10 flex justify-start lg:justify-center">
-          <div className="text-left lg:text-center w-full lg:w-2/5">
-            <h2 className="text-[20px] lg:text-2xl mb-2 font-bold text-gray-900">
-              <CMSkeletonTwo
-                count={1}
-                height={30}
-                loading={false}
-                error={error}
-                data="Ready in Minutes"
-              />
-            </h2>
-            <p className="hidden lg:block text-base font-sans text-gray-600 leading-6">
-              <CMSkeletonTwo
-                count={5}
-                height={20}
-                loading={false}
-                error={error}
-                data="Shop the freshest fish and seafood — handpicked for your kitchen. Enjoy today’s offers and save big on every catch!"
-              />
-            </p>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+             <div className="w-12 h-12">
+               <Lottie animationData={fryingPanAnimation} loop={true} />
+             </div>
+             <div>
+                <h2 className="text-xl lg:text-2xl font-bold text-green-700">Ready in Minutes!</h2>
+                <p className="text-sm lg:text-base text-gray-500 font-medium">Simplify Your Meals</p>
+             </div>
           </div>
+          <Link href="/ready-to-cook">
+             <button className="border border-green-600 text-green-700 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-green-50 transition-colors">
+               See All
+             </button>
+          </Link>
         </div>
+
         <Swiper
           modules={[Navigation]}
           spaceBetween={12}
+          slidesPerView="auto"
           pagination={{ clickable: true }}
-          breakpoints={{
-            0: { slidesPerView: 1.3 },
-            480: { slidesPerView: 2.1 },
-            640: { slidesPerView: 2.5 },
-            768: { slidesPerView: 3.2 },
-            1024: { slidesPerView: 4.2 },
-            1280: { slidesPerView: 5.2 },
-          }}
+          className="product-swiper"
         >
-          {/* <SwiperSlide className="pb-2">
-      <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-white border-gray-100 transition-all duration-150 hover:border-emerald-500">
-              <div className="relative w-full min-h-48 lg:h-52">
-                {readyToEatImg && (
-                  <Image
-                    src={readyToEatImg}
+          {/* Banner Card */}
+          <SwiperSlide className="pb-2 !w-auto !h-auto flex-shrink-0">
+            <div className="group relative h-full rounded-xl overflow-hidden cursor-pointer">
+                  <img
+                    src="/rtc.png"
                     alt="Ready To Cook Banner"
-                    fill
-                    className="object-cover"
-                    priority
+                    className="h-[260px] sm:h-[280px] lg:h-[320px] w-auto object-cover rounded-xl hover:scale-105 transition-transform duration-500"
                   />
-                )}
-              </div>
             </div>
-          </SwiperSlide> */}
+          </SwiperSlide>
 
           {/* 🔹 All Product Cards */}
           {sortOutOfStockLast(readyToEatProductData)
             ?.slice(0, 10)
             .map((product) => (
-              <SwiperSlide key={product.id} className="pb-2">
+              <SwiperSlide key={product.id} className="pb-2 !w-[170px] sm:!w-[200px] lg:!w-[240px] flex-shrink-0">
                 <ProductCard product={product} currency={currency} />
               </SwiperSlide>
             ))}

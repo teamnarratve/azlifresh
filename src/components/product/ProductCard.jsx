@@ -144,7 +144,7 @@ const ProductCard = ({ product, attributes, currency }) => {
     <>
     
 
-      <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-white border-gray-100 transition-all duration-150 hover:border-emerald-500">
+      <div className="group relative flex flex-col h-full overflow-hidden rounded-xl border bg-white border-gray-100 transition-all duration-150 hover:border-emerald-500">
         {/* 🔹 Discount Badge */}
         <div className="absolute top-2 left-2 z-10">
           {off_price < originalPrice && (
@@ -172,7 +172,7 @@ const ProductCard = ({ product, attributes, currency }) => {
 
         {/* 🔹 Product Info */}
         <div className="flex flex-col flex-1 p-4 space-y-2">
-          <h3 className="text-sm font-medium text-gray-800">
+          <h3 className="text-sm font-medium text-gray-800 truncate">
             {productName}
           </h3>
           <p className="text-xs text-gray-500">{weight}</p>
